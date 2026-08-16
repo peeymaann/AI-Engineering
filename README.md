@@ -1,34 +1,56 @@
-# AI Engineering
+# 🚀 AI Engineering
 
 [English](./README.md) | [فارسی](./README.fa.md)
 
-A step-by-step learning path for becoming an AI Engineer using a modern TypeScript stack.
+> A practical, weekly roadmap for becoming an **AI Engineer** with a modern TypeScript stack.
 
-This repository follows a weekly roadmap. Each major milestone is saved with Git tags so you can review progress stage by stage.
+Build real projects step by step: streaming chat → RAG over your documents → NestJS backend.
 
-## Stack
+---
 
-- **Frontend:** Nuxt 4, Vue 3, TypeScript, Nuxt UI
-- **AI SDK:** Vercel AI SDK (`ai`, `@ai-sdk/vue`)
-- **Local LLM:** Ollama (`gemma2:2b`, `nomic-embed-text`)
-- **Cloud LLM:** xAI Grok
-- **Vector Database:** Supabase (PostgreSQL + `pgvector`)
-- **Backend:** NestJS
-- **Storage:** Supabase Storage
+## ✨ What is this repository?
 
-## Repository Structure
+This is a **hands-on learning repository**, not an empty template.
+
+Inside you will find:
+
+- ✅ A working Nuxt chat app with Ollama + Grok
+- ✅ RAG pipeline with Supabase + embeddings
+- ✅ PDF/text document upload
+- ✅ NestJS API for search, documents, and RAG chat
+- ✅ Git tags for each major milestone
+
+---
+
+## 🛠️ Stack
+
+| Area | Tools |
+|------|--------|
+| 🖥️ Frontend | Nuxt 4, Vue 3, TypeScript, Nuxt UI |
+| 🤖 AI SDK | Vercel AI SDK (`ai`, `@ai-sdk/vue`) |
+| 🏠 Local LLM | Ollama (`gemma2:2b`, `nomic-embed-text`) |
+| ☁️ Cloud LLM | xAI Grok |
+| 🗄️ Vector DB | Supabase (PostgreSQL + `pgvector`) |
+| 🧩 Backend | NestJS |
+| 📁 Files | Supabase Storage |
+
+---
+
+## 📂 Repository Structure
 
 ```text
 AI-Engineering/
-├── ai-nuxt-app/     # Nuxt frontend + Nitro APIs
-├── rag-api/         # NestJS RAG backend
-├── README.md        # English version
-└── README.fa.md     # Persian version
+├── 📁 ai-nuxt-app/     # Nuxt frontend + Nitro APIs
+├── 📁 rag-api/         # NestJS RAG backend
+├── 📄 README.md        # English
+└── 📄 README.fa.md     # Persian
 ```
 
-## How to Run
+---
 
-### 1) Nuxt app
+## ▶️ How to Run
+
+### 1️⃣ Nuxt app
 
 ```bash
 cd ai-nuxt-app
@@ -36,9 +58,9 @@ pnpm install
 pnpm dev
 ```
 
-App: [http://localhost:3000](http://localhost:3000)
+🌐 App: [http://localhost:3000](http://localhost:3000)
 
-### 2) NestJS API
+### 2️⃣ NestJS API
 
 ```bash
 cd rag-api
@@ -46,24 +68,24 @@ pnpm install
 pnpm start:dev
 ```
 
-API: [http://localhost:3002](http://localhost:3002)
+🔌 API: [http://localhost:3002](http://localhost:3002)
 
-### 3) Ollama
-
-Make sure Ollama is running and models are available:
+### 3️⃣ Ollama
 
 ```bash
 ollama list
 ```
 
-Required models used in this path:
+Required models:
 
 - `gemma2:2b`
 - `nomic-embed-text`
 
-## Environment Variables
+---
 
-Never commit real `.env` files.
+## 🔐 Environment Variables
+
+> ⚠️ Never commit real `.env` files.
 
 ### `ai-nuxt-app/.env`
 
@@ -84,10 +106,11 @@ OLLAMA_BASE_URL=http://localhost:11434/api
 PORT=3002
 ```
 
-## Weekly Roadmap
+---
 
-### Week 1 — AI Chat Foundations
+## 🗺️ Weekly Roadmap
 
+### 📅 Week 1 — AI Chat Foundations
 - Set up Nuxt project
 - Install and use Vercel AI SDK
 - Learn `streamText` and chat streaming
@@ -95,10 +118,9 @@ PORT=3002
 - Connect local Ollama model
 - Optional cloud model switch (Grok)
 
-**Focus:** understand streaming chat end-to-end.
+🎯 **Focus:** understand streaming chat end-to-end.
 
-### Week 2 — Better Chat UX + State
-
+### 📅 Week 2 — Better Chat UX + State
 - Improve chat UI with Nuxt UI
 - Use `useChat`
 - Add model/API switching
@@ -106,19 +128,17 @@ PORT=3002
 - Persist chat history in `localStorage`
 - Clear chat and restore after refresh
 
-**Focus:** production-like chat experience.
+🎯 **Focus:** production-like chat experience.
 
-### Week 3–4 — Prompting and Backend Discipline
-
+### 📅 Week 3–4 — Prompting and Backend Discipline
 - System prompts
 - Cleaner API handlers in Nitro
 - Error handling and loading states
 - Git workflow: commit, tag, release notes
 
-**Focus:** stable chat architecture before RAG.
+🎯 **Focus:** stable chat architecture before RAG.
 
-### Week 5–6 — RAG (Retrieval-Augmented Generation)
-
+### 📅 Week 5–6 — RAG (Retrieval-Augmented Generation)
 - Learn vector embeddings
 - Set up Supabase + `pgvector`
 - Create `documents` table
@@ -129,10 +149,9 @@ PORT=3002
 - Upload PDF, extract text, chunk, embed
 - Store original PDF in Supabase Storage
 
-**Focus:** chat with your own documents.
+🎯 **Focus:** chat with your own documents.
 
-### Week 7 — NestJS Backend for RAG
-
+### 📅 Week 7 — NestJS Backend for RAG
 - Create NestJS project (`rag-api`)
 - Connect NestJS to Supabase
 - Implement:
@@ -143,37 +162,42 @@ PORT=3002
 - Switch frontend between Nuxt API and NestJS API
 - Improve retrieval quality with similarity threshold
 
-**Focus:** separate frontend and backend cleanly.
+🎯 **Focus:** separate frontend and backend cleanly.
 
-### Week 8+ — Next Steps (planned)
-
+### 📅 Week 8+ — Next Steps (planned)
 - API route unification between Nuxt and NestJS
 - Better document management UI
 - Auth and per-user documents
 - Agents / tool calling
-- Observability (for example Langfuse)
+- Observability (e.g. Langfuse)
 - Deployment
 
-## Useful API Endpoints
+---
+
+## 📡 Useful API Endpoints
 
 ### Nuxt (`localhost:3000`)
 
-- `POST /api/chat`
-- `POST /api/chat-grok`
-- `POST /api/chat-rag`
-- `POST /api/search`
-- `POST /api/documents`
-- `POST /api/pdf`
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/chat` | Local Ollama chat |
+| POST | `/api/chat-grok` | Grok cloud chat |
+| POST | `/api/chat-rag` | RAG chat (Nuxt) |
+| POST | `/api/search` | Similarity search |
+| POST | `/api/documents` | Upload text |
+| POST | `/api/pdf` | Upload PDF |
 
 ### NestJS (`localhost:3002`)
 
-- `POST /rag/documents`
-- `POST /rag/search`
-- `POST /rag/chat`
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/rag/documents` | Upload text |
+| POST | `/rag/search` | Similarity search |
+| POST | `/rag/chat` | RAG chat (NestJS) |
 
-## Git Tags (Milestones)
+---
 
-Examples used in this learning path:
+## 🏷️ Git Tags (Milestones)
 
 - `v0.1.0-week1`
 - `v0.2.0-week2`
@@ -193,24 +217,31 @@ Return to latest:
 git checkout main
 ```
 
-## Learning Goal
+---
 
-Move from Full Stack Developer skills (Nuxt/TypeScript) toward AI Engineering by building:
+## 🎯 Learning Goal
 
-1. Streaming LLM chat
-2. Model switching
-3. RAG over private documents
-4. Vector search
-5. A dedicated NestJS AI backend
+Move from Full Stack Developer skills (Nuxt / TypeScript) toward AI Engineering by building:
 
-## Notes
+1. 💬 Streaming LLM chat
+2. 🔄 Model switching
+3. 📚 RAG over private documents
+4. 🔍 Vector search
+5. 🧱 A dedicated NestJS AI backend
 
-- This repository is for learning and portfolio progress.
-- Local models are intentionally small for speed and lower hardware needs.
-- Cloud models (like Grok) are optional for comparison.
-- Service role keys must stay only on the server.
+---
 
-## Author
+## 📝 Notes
 
-Learning repository for AI Engineering practice with Nuxt, Vercel AI SDK, Supabase, Ollama, and NestJS.
-```
+- This repository is for **learning and portfolio progress**
+- Local models are intentionally small for speed and lower hardware needs
+- Cloud models (like Grok) are optional for comparison
+- Service role keys must stay only on the server
+
+---
+
+## 👤 Author
+
+Learning repository for AI Engineering practice with **Nuxt**, **Vercel AI SDK**, **Supabase**, **Ollama**, and **NestJS**.
+
+⭐ If this path helps you, consider starring the repo.
