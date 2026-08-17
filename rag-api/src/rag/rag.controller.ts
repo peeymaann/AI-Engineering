@@ -4,7 +4,7 @@ import { pipeUIMessageStreamToResponse, type UIMessage } from 'ai'
 import type { Response } from 'express'
 import { RagService } from './rag.service'
 
-@Controller('rag')
+@Controller()
 export class RagController {
 	constructor(private readonly ragService: RagService) { }
 
@@ -18,7 +18,7 @@ export class RagController {
 		return this.ragService.search(query)
 	}
 
-	@Post('chat')
+	@Post('chat-rag')
 	async chat(@Body('messages') messages: UIMessage[], @Res() res: Response) {
 		if (!Array.isArray(messages) || messages.length === 0) {
 			throw new BadRequestException('messages is required')
