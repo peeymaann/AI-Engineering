@@ -24,15 +24,15 @@
 
 ## 🛠️ استک پروژه
 
-| حوزه | ابزارها |
-|------|---------|
-| 🖥️ فرانت‌اند | Nuxt 4، Vue 3، TypeScript، Nuxt UI |
-| 🤖 AI SDK | Vercel AI SDK (`ai`، `@ai-sdk/vue`) |
-| 🏠 مدل محلی | Ollama (`gemma2:2b`، `nomic-embed-text`) |
-| ☁️ مدل ابری | xAI Grok |
-| 🗄️ دیتابیس برداری | Supabase (PostgreSQL + `pgvector`) |
-| 🧩 بک‌اند | NestJS |
-| 📁 فایل‌ها | Supabase Storage |
+| حوزه              | ابزارها                                  |
+| ----------------- | ---------------------------------------- |
+| 🖥️ فرانت‌اند      | Nuxt 4، Vue 3، TypeScript، Nuxt UI       |
+| 🤖 AI SDK         | Vercel AI SDK (`ai`، `@ai-sdk/vue`)      |
+| 🏠 مدل محلی       | Ollama (`gemma2:2b`، `nomic-embed-text`) |
+| ☁️ مدل ابری       | xAI Grok                                 |
+| 🗄️ دیتابیس برداری | Supabase (PostgreSQL + `pgvector`)       |
+| 🧩 بک‌اند         | NestJS                                   |
+| 📁 فایل‌ها        | Supabase Storage                         |
 
 ---
 
@@ -111,6 +111,7 @@ PORT=3002
 ## 🗺️ Roadmap هفتگی
 
 ### 📅 هفته ۱ — پایه‌های چت هوش مصنوعی
+
 - راه‌اندازی پروژه Nuxt
 - نصب و استفاده از Vercel AI SDK
 - یادگیری `streamText` و استریم پاسخ
@@ -121,6 +122,7 @@ PORT=3002
 🎯 **هدف:** درک کامل چت استریم‌شده از ابتدا تا انتها.
 
 ### 📅 هفته ۲ — تجربه کاربری بهتر + مدیریت state
+
 - بهبود UI چت با Nuxt UI
 - استفاده از `useChat`
 - سوییچ بین مدل‌ها / APIها
@@ -131,6 +133,7 @@ PORT=3002
 🎯 **هدف:** نزدیک‌شدن به تجربه چت واقعی و پایدار.
 
 ### 📅 هفته ۳–۴ — Prompting و نظم Backend
+
 - System Prompt
 - تمیزکاری APIها در Nitro
 - مدیریت خطا و وضعیت loading
@@ -139,6 +142,7 @@ PORT=3002
 🎯 **هدف:** تثبیت معماری چت قبل از ورود به RAG.
 
 ### 📅 هفته ۵–۶ — RAG (پاسخ‌گویی با بازیابی اطلاعات)
+
 - آشنایی با Embedding و Vector Database
 - راه‌اندازی Supabase + `pgvector`
 - ساخت جدول `documents`
@@ -152,6 +156,7 @@ PORT=3002
 🎯 **هدف:** چت با اسناد و داده‌های خودتان.
 
 ### 📅 هفته ۷ — بک‌اند NestJS برای RAG
+
 - ساخت پروژه NestJS (`rag-api`)
 - اتصال NestJS به Supabase
 - پیاده‌سازی:
@@ -165,12 +170,25 @@ PORT=3002
 🎯 **هدف:** جداسازی تمیز Frontend و Backend.
 
 ### 📅 هفته ۸ به بعد — مراحل بعدی (برنامه)
+
 - یکسان‌سازی مسیر APIهای Nuxt و NestJS
 - UI بهتر برای مدیریت اسناد
 - احراز هویت و اسناد اختصاصی هر کاربر
 - Agent / Tool Calling
+- Multi-Agent ساده (Researcher + Writer + Reviewer)
+- ابزار جستجوی وب با API مجاز (مثل Google Custom Search)
 - مشاهده‌پذیری (مثلاً Langfuse)
 - Deploy
+
+---
+
+## 🤖 آینده: Agentها + جستجوی وب
+
+بعد از پایدار شدن RAG، مسیر ادامه پیدا می‌کند با:
+
+1. **Tool Calling** — مدل در صورت نیاز ابزار صدا می‌زند
+2. **Multi-Agent ساده** — Researcher، Writer، Reviewer
+3. **API مجاز جستجوی وب** — ترکیب دانش داخلی Supabase با اطلاعات به‌روز اینترنت
 
 ---
 
@@ -178,22 +196,22 @@ PORT=3002
 
 ### Nuxt (`localhost:3000`)
 
-| Method | Endpoint | توضیح |
-|--------|----------|--------|
-| POST | `/api/chat` | چت محلی با Ollama |
-| POST | `/api/chat-grok` | چت ابری با Grok |
-| POST | `/api/chat-rag` | چت RAG (Nuxt) |
-| POST | `/api/search` | جستجوی شباهت |
-| POST | `/api/documents` | آپلود متن |
-| POST | `/api/pdf` | آپلود PDF |
+| Method | Endpoint         | توضیح             |
+| ------ | ---------------- | ----------------- |
+| POST   | `/api/chat`      | چت محلی با Ollama |
+| POST   | `/api/chat-grok` | چت ابری با Grok   |
+| POST   | `/api/chat-rag`  | چت RAG (Nuxt)     |
+| POST   | `/api/search`    | جستجوی شباهت      |
+| POST   | `/api/documents` | آپلود متن         |
+| POST   | `/api/pdf`       | آپلود PDF         |
 
 ### NestJS (`localhost:3002`)
 
-| Method | Endpoint | توضیح |
-|--------|----------|--------|
-| POST | `/rag/documents` | آپلود متن |
-| POST | `/rag/search` | جستجوی شباهت |
-| POST | `/rag/chat` | چت RAG (NestJS) |
+| Method | Endpoint         | توضیح           |
+| ------ | ---------------- | --------------- |
+| POST   | `/rag/documents` | آپلود متن       |
+| POST   | `/rag/search`    | جستجوی شباهت    |
+| POST   | `/rag/chat`      | چت RAG (NestJS) |
 
 ---
 

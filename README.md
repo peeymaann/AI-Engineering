@@ -24,15 +24,15 @@ Inside you will find:
 
 ## 🛠️ Stack
 
-| Area | Tools |
-|------|--------|
-| 🖥️ Frontend | Nuxt 4, Vue 3, TypeScript, Nuxt UI |
-| 🤖 AI SDK | Vercel AI SDK (`ai`, `@ai-sdk/vue`) |
+| Area         | Tools                                    |
+| ------------ | ---------------------------------------- |
+| 🖥️ Frontend  | Nuxt 4, Vue 3, TypeScript, Nuxt UI       |
+| 🤖 AI SDK    | Vercel AI SDK (`ai`, `@ai-sdk/vue`)      |
 | 🏠 Local LLM | Ollama (`gemma2:2b`, `nomic-embed-text`) |
-| ☁️ Cloud LLM | xAI Grok |
-| 🗄️ Vector DB | Supabase (PostgreSQL + `pgvector`) |
-| 🧩 Backend | NestJS |
-| 📁 Files | Supabase Storage |
+| ☁️ Cloud LLM | xAI Grok                                 |
+| 🗄️ Vector DB | Supabase (PostgreSQL + `pgvector`)       |
+| 🧩 Backend   | NestJS                                   |
+| 📁 Files     | Supabase Storage                         |
 
 ---
 
@@ -111,6 +111,7 @@ PORT=3002
 ## 🗺️ Weekly Roadmap
 
 ### 📅 Week 1 — AI Chat Foundations
+
 - Set up Nuxt project
 - Install and use Vercel AI SDK
 - Learn `streamText` and chat streaming
@@ -121,6 +122,7 @@ PORT=3002
 🎯 **Focus:** understand streaming chat end-to-end.
 
 ### 📅 Week 2 — Better Chat UX + State
+
 - Improve chat UI with Nuxt UI
 - Use `useChat`
 - Add model/API switching
@@ -131,6 +133,7 @@ PORT=3002
 🎯 **Focus:** production-like chat experience.
 
 ### 📅 Week 3–4 — Prompting and Backend Discipline
+
 - System prompts
 - Cleaner API handlers in Nitro
 - Error handling and loading states
@@ -139,6 +142,7 @@ PORT=3002
 🎯 **Focus:** stable chat architecture before RAG.
 
 ### 📅 Week 5–6 — RAG (Retrieval-Augmented Generation)
+
 - Learn vector embeddings
 - Set up Supabase + `pgvector`
 - Create `documents` table
@@ -152,6 +156,7 @@ PORT=3002
 🎯 **Focus:** chat with your own documents.
 
 ### 📅 Week 7 — NestJS Backend for RAG
+
 - Create NestJS project (`rag-api`)
 - Connect NestJS to Supabase
 - Implement:
@@ -165,12 +170,25 @@ PORT=3002
 🎯 **Focus:** separate frontend and backend cleanly.
 
 ### 📅 Week 8+ — Next Steps (planned)
+
 - API route unification between Nuxt and NestJS
 - Better document management UI
 - Auth and per-user documents
-- Agents / tool calling
+- Agents / Tool Calling
+- Simple Multi-Agent system (Researcher + Writer + Reviewer)
+- Web search tool with an official API (Google Custom Search or similar)
 - Observability (e.g. Langfuse)
 - Deployment
+
+---
+
+## 🤖 Future: Agents + Web Search
+
+After RAG is stable, the roadmap continues with:
+
+1. **Tool Calling** — the model can call tools when needed
+2. **Simple Multi-Agent** — Researcher, Writer, Reviewer
+3. **Authorized Web Search API** — combine private Supabase knowledge with up-to-date public information
 
 ---
 
@@ -178,22 +196,22 @@ PORT=3002
 
 ### Nuxt (`localhost:3000`)
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/chat` | Local Ollama chat |
-| POST | `/api/chat-grok` | Grok cloud chat |
-| POST | `/api/chat-rag` | RAG chat (Nuxt) |
-| POST | `/api/search` | Similarity search |
-| POST | `/api/documents` | Upload text |
-| POST | `/api/pdf` | Upload PDF |
+| Method | Endpoint         | Description       |
+| ------ | ---------------- | ----------------- |
+| POST   | `/api/chat`      | Local Ollama chat |
+| POST   | `/api/chat-grok` | Grok cloud chat   |
+| POST   | `/api/chat-rag`  | RAG chat (Nuxt)   |
+| POST   | `/api/search`    | Similarity search |
+| POST   | `/api/documents` | Upload text       |
+| POST   | `/api/pdf`       | Upload PDF        |
 
 ### NestJS (`localhost:3002`)
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/rag/documents` | Upload text |
-| POST | `/rag/search` | Similarity search |
-| POST | `/rag/chat` | RAG chat (NestJS) |
+| Method | Endpoint         | Description       |
+| ------ | ---------------- | ----------------- |
+| POST   | `/rag/documents` | Upload text       |
+| POST   | `/rag/search`    | Similarity search |
+| POST   | `/rag/chat`      | RAG chat (NestJS) |
 
 ---
 
