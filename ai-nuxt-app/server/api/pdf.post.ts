@@ -21,7 +21,10 @@ export default defineEventHandler(async (event) => {
 	const supabase = useServerSupabaseAdmin()
 	const filename = `${Date.now()}-${file.filename || 'upload.pdf'}`
 
+
 	// ۱) ذخیره خود فایل PDF
+	// 1) Saving the PDF file itself
+
 	const { error: storageError } = await supabase.storage
 		.from('documents')
 		.upload(filename, file.data, {
@@ -37,6 +40,7 @@ export default defineEventHandler(async (event) => {
 	}
 
 	// ۲) استخراج متن
+	// 2) Text extraction
 	const parser = new PDFParse({ data: file.data })
 	const parsed = await parser.getText()
 	await parser.destroy()
@@ -50,6 +54,7 @@ export default defineEventHandler(async (event) => {
 	}
 
 	// ۳) تکه‌تکه + Embedding + ذخیره در جدول
+	// 3) Chunking + Embedding + Saving to table
 	const chunkSize = 500
 	const chunks: string[] = []
 	for (let i = 0; i < text.length; i += chunkSize) {

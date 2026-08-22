@@ -17,6 +17,7 @@ export default defineEventHandler(async (event) => {
 	}
 
 	// ۱) Embedding برای سؤال
+	// 1) Embedding for the question
 	const { embedding } = await embed({
 		model: ollama.embedding('nomic-embed-text'),
 		value: query,
@@ -25,6 +26,7 @@ export default defineEventHandler(async (event) => {
 	const supabase = useServerSupabase()
 
 	// ۲) جستجوی اسناد شبیه
+	// 2) Search for similar documents
 	const { data, error } = await supabase.rpc('match_documents', {
 		query_embedding: embedding,
 		match_threshold: 0.1,

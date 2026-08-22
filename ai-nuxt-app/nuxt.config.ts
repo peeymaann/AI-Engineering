@@ -20,11 +20,12 @@ export default defineNuxtConfig({
 				lang: 'fa',
 				dir: 'rtl',
 			},
-			title: 'چت با Ollama',
+			title: 'چت با Ollama| Chat with Ollama',
 		},
 	},
 
 	// تنظیمات اضافی برای AI و Nitro
+	// Additional settings for AI and Nitro
 	nitro: {
 		experimental: {
 			openAPI: true,
