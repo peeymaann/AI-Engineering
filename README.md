@@ -222,6 +222,7 @@ After RAG is stable, the roadmap continues with:
 - `v0.5.0-rag`
 - `v0.5.0-before-monorepo`
 - `v0.6.0-monorepo`
+- ...
 
 Check a specific stage:
 
