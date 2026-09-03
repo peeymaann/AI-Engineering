@@ -6,7 +6,8 @@ export const useChatStore = defineStore("chat", () => {
 		{ label: "Ollama (محلی)", value: "/api/chat", icon: "i-lucide-server" },
 		{ label: "Grok (xAI)", value: "/api/chat-grok", icon: "i-lucide-sparkles" },
 		{ label: 'RAG (اسناد)', value: '/api/chat-rag', icon: 'i-lucide-file-search' },
-		{ label: 'RAG (NestJS)', value: 'http://localhost:3002/api/chat-rag', icon: 'i-lucide-network' },
+		{ label: 'RAG (NestJS)', value: 'http://localhost:3002/chat-rag', icon: 'i-lucide-network' },
+		{ label: 'Agent (ابزارها)', value: '/api/chat-agent', icon: 'i-lucide-bot' },
 	]);
 
 	// تاریخچه پیام‌ها

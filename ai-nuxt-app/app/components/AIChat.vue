@@ -2,7 +2,7 @@
 	<div class="mx-auto flex h-full min-h-0 w-full max-w-2xl flex-col gap-4 p-1 sm:gap-5 sm:p-2">
 		<!-- Header -->
 		<div
-			class="shrink-0 flex flex-col gap-4 rounded-2xl border border-default bg-elevated/50 p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+			class="relative z-50 shrink-0 flex flex-col gap-4 rounded-2xl border border-default bg-elevated/50 p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
 			<div class="text-start">
 				<h1 id="chat-heading" class="text-xl font-bold text-highlighted">
 					چت با هوش مصنوعی
@@ -12,20 +12,21 @@
 				</p>
 			</div>
 
-			<div class="flex items-center gap-2">
+			<div class="relative z-50 flex items-center gap-2">
 				<UButton icon="i-lucide-trash-2" color="neutral" variant="ghost" size="sm"
 					:disabled="!messages.length || loading" @click="clearChat">
 					پاک کردن
 				</UButton>
 
 				<USelect
-					class="w-full sm:w-52"
+					class="relative z-50 w-full sm:w-52"
 					v-model="selectedApi"
 					:items="apiOptions"
 					value-key="value"
 					:portal="false"
 					:disabled="loading"
 					aria-label="انتخاب مدل هوش مصنوعی"
+					:ui="{ content: 'z-[100]' }"
 				/>
 			</div>
 		</div>
@@ -76,21 +77,48 @@
 
 			<!-- Input area: never scrolls with the messages -->
 			<div class="shrink-0 overflow-hidden border-t border-default bg-elevated/30 p-2">
-				<UChatPrompt
-					v-model="input"
-					name="chat-prompt"
-					autocomplete="off"
-					placeholder="پیام خود را بنویسید…"
-					:error="error"
-					variant="naked"
-					class="bg-transparent"
-					:ui="{ root: 'p-0 gap-0', body: 'w-full min-w-0' }"
-					@submit="onSubmit"
-				>
-					<template #trailing>
-						<UChatPromptSubmit :status="status" @stop="stop()" @reload="regenerate()" />
+				<!-- Client-only: browser form restoration mutates the textarea before hydration. -->
+				<ClientOnly>
+					<UChatPrompt
+						v-model="input"
+						placeholder="پیام خود را بنویسید…"
+						:error="error"
+						variant="naked"
+						class="bg-transparent"
+						:ui="{ root: 'p-0 gap-0', body: 'w-full min-w-0' }"
+						@submit="onSubmit"
+					>
+						<template #body="{ placeholder, disabled, submit }">
+							<UTextarea
+								id="chat-prompt"
+								name="chat-prompt"
+								v-model="input"
+								:placeholder="placeholder"
+								:disabled="disabled"
+								variant="none"
+								fixed
+								autoresize
+								:rows="1"
+								autocomplete="off"
+								aria-label="پیام چت"
+								class="w-full min-w-0"
+								@keydown="onPromptKeydown($event, submit)"
+							>
+								<template #trailing>
+									<UChatPromptSubmit :status="status" @stop="stop()" @reload="regenerate()" />
+								</template>
+							</UTextarea>
+						</template>
+					</UChatPrompt>
+					<template #fallback>
+						<div
+							class="flex min-h-10 w-full items-center text-base/5 text-muted"
+							aria-hidden="true"
+						>
+							پیام خود را بنویسید…
+						</div>
 					</template>
-				</UChatPrompt>
+				</ClientOnly>
 			</div>
 		</div>
 	</div>
@@ -133,6 +161,14 @@ watch(
 	},
 	{ deep: true }
 )
+
+function onPromptKeydown(event, submit) {
+	if (event.key !== 'Enter') return
+	if (event.shiftKey || event.ctrlKey || event.metaKey || event.altKey) return
+	if (event.isComposing || event.keyCode === 229) return
+	event.preventDefault()
+	submit(event)
+}
 
 function onSubmit() {
 	const text = input.value.trim()

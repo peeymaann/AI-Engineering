@@ -15,7 +15,6 @@ export default defineEventHandler(async (event) => {
 	const { messages }: { messages: UIMessage[] } = await readBody(event)
 
 	// آخرین پیام کاربر
-	// User's last message
 	const lastUserMessage = [...messages]
 		.reverse()
 		.find((m) => m.role === 'user')
@@ -25,8 +24,6 @@ export default defineEventHandler(async (event) => {
 			?.filter((p: any) => p.type === 'text')
 			?.map((p: any) => p.text)
 			?.join(' ') ||
-		// fallback برای ساختارهای قدیمی‌تر
-		// Fallback for older structures
 		(lastUserMessage as any)?.content ||
 		''
 
@@ -38,14 +35,12 @@ export default defineEventHandler(async (event) => {
 	}
 
 	// ۱) Embedding سؤال
-	// 1) Question Embedding
 	const { embedding } = await embed({
 		model: ollama.embedding('nomic-embed-text'),
 		value: question,
 	})
 
 	// ۲) جستجوی اسناد مرتبط
-	// 2) Searching for related documents
 	const supabase = useServerSupabase()
 	const { data: matches, error } = await supabase.rpc('match_documents', {
 		query_embedding: embedding,
@@ -62,20 +57,14 @@ export default defineEventHandler(async (event) => {
 
 	const context =
 		matches?.map((m: any) => m.content).join('\n\n') ||
-		'هیچ سند مرتبطی پیدا نشد.| No relevant document was found.'
+		'هیچ سند مرتبطی پیدا نشد.'
 
 	// ۳) پاسخ مدل با context
-	// 3) Model response with context
 	const result = streamText({
 		model: ollama('gemma2:2b'),
-//Prompt: You are a Persian-speaking assistant. Answer only based on the information below. 
-// If the answer is not in the information, say: "I did not find it in the available documents."
-
-Information:
 		system: `تو یک دستیار فارسی‌زبان هستی.
 فقط بر اساس اطلاعات زیر جواب بده.
 اگر جواب در اطلاعات نبود، بگو: «در اسناد موجود پیدا نکردم.»
-
 
 اطلاعات:
 ${context}`,

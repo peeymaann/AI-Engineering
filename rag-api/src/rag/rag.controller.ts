@@ -2,6 +2,7 @@
 import { BadRequestException, Body, Controller, Post, Res } from '@nestjs/common'
 import { pipeUIMessageStreamToResponse, type UIMessage } from 'ai'
 import type { Response } from 'express'
+import { existingResponseHeaders } from '../http/existing-response-headers'
 import { RagService } from './rag.service'
 
 @Controller()
@@ -29,6 +30,7 @@ export class RagController {
 		await pipeUIMessageStreamToResponse({
 			response: res,
 			stream,
+			headers: existingResponseHeaders(res),
 		})
 	}
 }
