@@ -2,9 +2,9 @@
 
 [English](./README.md) | [فارسی](./README.fa.md)
 
-> مسیر عملی و ۸ هفته‌ای برای تبدیل‌شدن به **AI Engineer** با استک مدرن TypeScript.
+> مسیر عملی و هفتگی برای تبدیل‌شدن به **AI Engineer** با استک مدرن TypeScript.
 
-پروژه‌های واقعی را مرحله‌به‌مرحله می‌سازید: چت استریم → RAG → NestJS → Agent → داشبورد IoT → احراز هویت → Deploy.
+پروژه‌های واقعی را مرحله‌به‌مرحله می‌سازید: چت استریم → RAG روی اسناد خودتان → بک‌اند NestJS.
 
 ---
 
@@ -19,21 +19,20 @@
 - ✅ آپلود متن و PDF
 - ✅ APIهای NestJS برای جستجو، اسناد و چت RAG
 - ✅ Git Tag برای هر مرحله مهم
-- 🚧 Agent، داشبورد IoT، احراز هویت، مشاهده‌پذیری و Deploy (هفته‌های ۴ تا ۸)
 
 ---
 
 ## 🛠️ استک پروژه
 
-| حوزه              | ابزارها                                           |
-| ----------------- | ------------------------------------------------- |
-| 🖥️ فرانت‌اند      | Nuxt 4، Vue 3، TypeScript، Nuxt UI، Pinia، VueUse |
-| 🤖 AI SDK         | Vercel AI SDK (`ai`، `@ai-sdk/vue`)               |
-| 🏠 مدل محلی       | Ollama (`gemma2:2b`، `nomic-embed-text`)          |
-| ☁️ مدل ابری       | xAI Grok                                          |
-| 🗄️ دیتابیس برداری | Supabase (PostgreSQL + `pgvector`)                |
-| 🧩 بک‌اند         | NestJS                                            |
-| 📁 فایل‌ها        | Supabase Storage                                  |
+| حوزه              | ابزارها                                  |
+| ----------------- | ---------------------------------------- |
+| 🖥️ فرانت‌اند      | Nuxt 4، Vue 3، TypeScript، Nuxt UI       |
+| 🤖 AI SDK         | Vercel AI SDK (`ai`، `@ai-sdk/vue`)      |
+| 🏠 مدل محلی       | Ollama (`gemma2:2b`، `nomic-embed-text`) |
+| ☁️ مدل ابری       | xAI Grok                                 |
+| 🗄️ دیتابیس برداری | Supabase (PostgreSQL + `pgvector`)       |
+| 🧩 بک‌اند         | NestJS                                   |
+| 📁 فایل‌ها        | Supabase Storage                         |
 
 ---
 
@@ -41,10 +40,10 @@
 
 ```text
 AI-Engineering/
-├── 📁 ai-nuxt-app/   # فرانت‌اند Nuxt + APIهای Nitro
-├── 📁 rag-api/       # بک‌اند NestJS برای RAG
-├── 📄 README.md      # نسخه انگلیسی
-└── 📄 README.fa.md   # نسخه فارسی
+├── 📁 ai-nuxt-app/     # فرانت‌اند Nuxt + APIهای Nitro
+├── 📁 rag-api/         # بک‌اند NestJS برای RAG
+├── 📄 README.md        # نسخه انگلیسی
+└── 📄 README.fa.md     # نسخه فارسی
 ```
 
 ---
@@ -107,88 +106,89 @@ OLLAMA_BASE_URL=http://localhost:11434/api
 PORT=3002
 ```
 
-در هفته‌های بعد ممکن است کلید Langfuse هم اضافه شود. آن را هم فقط در `.env` بگذارید.
-
 ---
 
 ## 🗺️ Roadmap هفتگی
 
-### 📅 هفته ۱ — چت + Vercel AI SDK + Ollama / Grok
+### 📅 هفته ۱ — پایه‌های چت هوش مصنوعی
 
 - راه‌اندازی پروژه Nuxt
 - نصب و استفاده از Vercel AI SDK
 - یادگیری `streamText` و استریم پاسخ
-- اتصال به مدل محلی Ollama (`gemma2:2b`)
-- سوییچ اختیاری به مدل ابری Grok
+- ساخت رابط چت ساده
+- اتصال به مدل محلی Ollama
+- سوییچ اختیاری به مدل ابری (Grok)
 
-🎯 **هدف:** درک چت استریم‌شده از رابط تا مدل و برگشت.
+🎯 **هدف:** درک کامل چت استریم‌شده از ابتدا تا انتها.
 
-### 📅 هفته ۲ — UI + Pinia + تاریخچه + Git
+### 📅 هفته ۲ — تجربه کاربری بهتر + مدیریت state
 
-- UI حرفه‌ای چت با Nuxt UI
-- مدیریت state با Pinia و VueUse
+- بهبود UI چت با Nuxt UI
+- استفاده از `useChat`
+- سوییچ بین مدل‌ها / APIها
+- مدیریت state با Pinia
 - ذخیره تاریخچه چت در `localStorage`
 - پاک‌کردن چت و بازیابی بعد از رفرش
+
+🎯 **هدف:** نزدیک‌شدن به تجربه چت واقعی و پایدار.
+
+### 📅 هفته ۳–۴ — Prompting و نظم Backend
+
+- System Prompt
+- تمیزکاری APIها در Nitro
+- مدیریت خطا و وضعیت loading
 - نظم Git: Commit، Tag، توضیحات Release
 
-🎯 **هدف:** نزدیک شدن به تجربه چت واقعی و پایدار.
+🎯 **هدف:** تثبیت معماری چت قبل از ورود به RAG.
 
-### 📅 هفته ۳ — RAG + Embedding + PDF + Nest + سوییچ API
+### 📅 هفته ۵–۶ — RAG (پاسخ‌گویی با بازیابی اطلاعات)
 
+- آشنایی با Embedding و Vector Database
 - راه‌اندازی Supabase + `pgvector`
+- ساخت جدول `documents`
 - تولید Embedding با `nomic-embed-text`
-- جستجوی شباهت و `/api/chat-rag`
-- آپلود متن و PDF، قطعه‌قطعه کردن، Embedding و ذخیره فایل
-- بک‌اند NestJS (`rag-api`)
-- مسیرها: `POST /documents`، `POST /search`، `POST /chat-rag`
-- سوییچ Frontend بین APIی Nuxt و NestJS
+- پیاده‌سازی جستجوی شباهت (`match_documents`)
+- اتصال context بازیابی‌شده به چت (`/api/chat-rag`)
+- آپلود متن ساده
+- آپلود PDF، استخراج متن، قطعه‌قطعه کردن و Embedding
+- ذخیره فایل اصلی PDF در Supabase Storage
 
-🎯 **هدف:** چت با اسناد خودتان، با جداسازی تمیز Frontend و Backend.
+🎯 **هدف:** چت با اسناد و داده‌های خودتان.
 
-### 📅 هفته ۴ — Tool Calling + Agent ساده
+### 📅 هفته ۷ — بک‌اند NestJS برای RAG
 
-- یادگیری **Tool Calling**: مدل فقط متن نمی‌نویسد؛ می‌تواند ابزار بخواهد، نتیجه را بگیرد، بعد جواب بدهد
-- ابزار `calculator` برای محاسبه
-- ابزار `searchDocuments` برای RAG و اسناد خودتان
-- ساخت یک Agent ساده که هر دو ابزار را انتخاب و استفاده کند
-- API جدید: `POST /api/chat-agent`
+- ساخت پروژه NestJS (`rag-api`)
+- اتصال NestJS به Supabase
+- پیاده‌سازی:
+  - `POST /rag/documents`
+  - `POST /rag/search`
+  - `POST /rag/chat`
+- حفظ APIهای Nuxt در کنار NestJS
+- امکان سوییچ Frontend بین Nuxt API و NestJS API
+- بهبود کیفیت بازیابی با آستانه شباهت
 
-🎯 **هدف:** فهم Tool Calling و قرار دادن آن داخل یک Agent ساده. مدل در صورت نیاز ابزار را صدا بزند، بعد پاسخ دهد.
+🎯 **هدف:** جداسازی تمیز Frontend و Backend.
 
-### 📅 هفته ۵ — Multi-Agent ساده
+### 📅 هفته ۸ به بعد — مراحل بعدی (برنامه)
 
-- یادگیری **Multi-Agent**: به‌جای اینکه یک مدل همه کار را بکند، چند نقش کوچک پشت‌سرهم کار می‌کنند
-- Researcher: از اسناد یا ابزارها واقعیت را پیدا می‌کند
-- Writer: همان واقعیت را به پاسخ واضح تبدیل می‌کند
-- Reviewer: پاسخ را بررسی و اشتباه را اصلاح می‌کند
-- کوچک بماند: یک مثال آموزشی، نه سیستم تولیدی بزرگ
+- یکسان‌سازی مسیر APIهای Nuxt و NestJS
+- UI بهتر برای مدیریت اسناد
+- احراز هویت و اسناد اختصاصی هر کاربر
+- Agent / Tool Calling
+- Multi-Agent ساده (Researcher + Writer + Reviewer)
+- ابزار جستجوی وب با API مجاز (مثل Google Custom Search)
+- مشاهده‌پذیری (مثلاً Langfuse)
+- Deploy
 
-🎯 **هدف:** تقسیم کار بین نقش‌های ساده، نه ساخت سیستم بزرگ.
+---
 
-### 📅 هفته ۶ — داشبورد IoT با هوش مصنوعی
+## 🤖 آینده: Agentها + جستجوی وب
 
-- نمایش داده سنسور روی داشبورد
-- تحلیل هوشمند داده سنسور
-- UI حرفه‌ای با Pinia / VueUse / Nuxt
-- اتصال داشبورد به بک‌اند NestJS
+بعد از پایدار شدن RAG، مسیر ادامه پیدا می‌کند با:
 
-🎯 **هدف:** داده را نشان دهید و بگذارید هوش مصنوعی آن را توضیح دهد.
-
-### 📅 هفته ۷ — Auth کوتاه + مشاهده‌پذیری مفهومی
-
-- احراز هویت کوتاه و امنیت پایه
-- آشنایی با اسناد جدا برای هر کاربر
-- آشنایی مفهومی با Langfuse و ثبت لاگ
-
-🎯 **هدف:** فهم Auth و Trace؛ نه ساخت پلتفرم کامل تولیدی.
-
-### 📅 هفته ۸ — Deploy + README نهایی
-
-- بهینه‌سازی و تست نهایی
-- Deploy روی Vercel
-- README نهایی، Tagها، نکات رزومه و Portfolio
-
-🎯 **هدف:** پروژه‌ای که بتوانید نشان دهید.
+1. **Tool Calling** — مدل در صورت نیاز ابزار صدا می‌زند
+2. **Multi-Agent ساده** — Researcher، Writer، Reviewer
+3. **API مجاز جستجوی وب** — ترکیب دانش داخلی Supabase با اطلاعات به‌روز اینترنت
 
 ---
 
@@ -207,11 +207,11 @@ PORT=3002
 
 ### NestJS (`localhost:3002`)
 
-| Method | Endpoint     | توضیح           |
-| ------ | ------------ | --------------- |
-| POST   | `/documents` | آپلود متن       |
-| POST   | `/search`    | جستجوی شباهت    |
-| POST   | `/chat-rag`  | چت RAG (NestJS) |
+| Method | Endpoint         | توضیح           |
+| ------ | ---------------- | --------------- |
+| POST   | `/rag/documents` | آپلود متن       |
+| POST   | `/rag/search`    | جستجوی شباهت    |
+| POST   | `/rag/chat`      | چت RAG (NestJS) |
 
 ---
 
@@ -222,7 +222,7 @@ PORT=3002
 - `v0.5.0-rag`
 - `v0.5.0-before-monorepo`
 - `v0.6.0-monorepo`
-  ...
+- ...
 
 دیدن یک مرحله مشخص:
 
@@ -247,9 +247,6 @@ git checkout main
 3. 📚 RAG روی اسناد خصوصی
 4. 🔍 جستجوی برداری
 5. 🧱 بک‌اند اختصاصی NestJS برای AI
-6. 🛠️ Tool Calling و یک Agent ساده
-7. 📡 داشبورد IoT با تحلیل هوشمند
-8. 🔐 Auth کوتاه، مشاهده‌پذیری و Deploy
 
 ---
 
@@ -259,7 +256,6 @@ git checkout main
 - مدل‌های محلی عمداً سبک انتخاب شده‌اند تا سریع‌تر اجرا شوند
 - مدل‌های ابری (مثل Grok) برای مقایسه اختیاری هستند
 - کلید `service_role` فقط باید روی سرور باشد
-- هفته ۷ آشنایی است، نه پشته کامل تولیدی Auth و Observability
 
 ---
 

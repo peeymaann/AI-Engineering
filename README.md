@@ -2,9 +2,9 @@
 
 [English](./README.md) | [فارسی](./README.fa.md)
 
-> A practical, 8-week roadmap for becoming an **AI Engineer** with a modern TypeScript stack.
+> A practical, weekly roadmap for becoming an **AI Engineer** with a modern TypeScript stack.
 
-Build real projects step by step: streaming chat → RAG → NestJS → agents → IoT dashboard → auth → deploy.
+Build real projects step by step: streaming chat → RAG over your documents → NestJS backend.
 
 ---
 
@@ -19,21 +19,20 @@ Inside you will find:
 - ✅ PDF/text document upload
 - ✅ NestJS API for search, documents, and RAG chat
 - ✅ Git tags for each major milestone
-- 🚧 Agents, IoT dashboard, auth, observability, and deploy (weeks 4–8)
 
 ---
 
 ## 🛠️ Stack
 
-| Area         | Tools                                             |
-| ------------ | ------------------------------------------------- |
-| 🖥️ Frontend  | Nuxt 4, Vue 3, TypeScript, Nuxt UI, Pinia, VueUse |
-| 🤖 AI SDK    | Vercel AI SDK (`ai`, `@ai-sdk/vue`)               |
-| 🏠 Local LLM | Ollama (`gemma2:2b`, `nomic-embed-text`)          |
-| ☁️ Cloud LLM | xAI Grok                                          |
-| 🗄️ Vector DB | Supabase (PostgreSQL + `pgvector`)                |
-| 🧩 Backend   | NestJS                                            |
-| 📁 Files     | Supabase Storage                                  |
+| Area         | Tools                                    |
+| ------------ | ---------------------------------------- |
+| 🖥️ Frontend  | Nuxt 4, Vue 3, TypeScript, Nuxt UI       |
+| 🤖 AI SDK    | Vercel AI SDK (`ai`, `@ai-sdk/vue`)      |
+| 🏠 Local LLM | Ollama (`gemma2:2b`, `nomic-embed-text`) |
+| ☁️ Cloud LLM | xAI Grok                                 |
+| 🗄️ Vector DB | Supabase (PostgreSQL + `pgvector`)       |
+| 🧩 Backend   | NestJS                                   |
+| 📁 Files     | Supabase Storage                         |
 
 ---
 
@@ -41,10 +40,10 @@ Inside you will find:
 
 ```text
 AI-Engineering/
-├── 📁 ai-nuxt-app/   # Nuxt frontend + Nitro APIs
-├── 📁 rag-api/       # NestJS RAG backend
-├── 📄 README.md      # English
-└── 📄 README.fa.md   # Persian
+├── 📁 ai-nuxt-app/     # Nuxt frontend + Nitro APIs
+├── 📁 rag-api/         # NestJS RAG backend
+├── 📄 README.md        # English
+└── 📄 README.fa.md     # Persian
 ```
 
 ---
@@ -107,88 +106,89 @@ OLLAMA_BASE_URL=http://localhost:11434/api
 PORT=3002
 ```
 
-Later weeks may add keys for Langfuse. Keep those in `.env` as well.
-
 ---
 
 ## 🗺️ Weekly Roadmap
 
-### 📅 Week 1 — Chat + Vercel AI SDK + Ollama / Grok
+### 📅 Week 1 — AI Chat Foundations
 
-- Set up the Nuxt project
+- Set up Nuxt project
 - Install and use Vercel AI SDK
 - Learn `streamText` and chat streaming
-- Connect local Ollama (`gemma2:2b`)
-- Optional cloud switch to Grok
+- Build a simple chat UI
+- Connect local Ollama model
+- Optional cloud model switch (Grok)
 
-🎯 **Focus:** streaming chat from UI to model and back.
+🎯 **Focus:** understand streaming chat end-to-end.
 
-### 📅 Week 2 — UI + Pinia + History + Git
+### 📅 Week 2 — Better Chat UX + State
 
-- Professional chat UI with Nuxt UI
-- State with Pinia and VueUse
+- Improve chat UI with Nuxt UI
+- Use `useChat`
+- Add model/API switching
+- Manage state with Pinia
 - Persist chat history in `localStorage`
 - Clear chat and restore after refresh
+
+🎯 **Focus:** production-like chat experience.
+
+### 📅 Week 3–4 — Prompting and Backend Discipline
+
+- System prompts
+- Cleaner API handlers in Nitro
+- Error handling and loading states
 - Git workflow: commit, tag, release notes
 
-🎯 **Focus:** a production-like chat experience.
+🎯 **Focus:** stable chat architecture before RAG.
 
-### 📅 Week 3 — RAG + Embedding + PDF + Nest + API Switch
+### 📅 Week 5–6 — RAG (Retrieval-Augmented Generation)
 
-- Supabase + `pgvector`
-- Embeddings with `nomic-embed-text`
-- Similarity search and `/api/chat-rag`
-- Upload text and PDF, chunk, embed, store files
-- NestJS backend (`rag-api`)
-- Endpoints: `POST /documents`, `POST /search`, `POST /chat-rag`
-- Switch the frontend between Nuxt API and NestJS API
+- Learn vector embeddings
+- Set up Supabase + `pgvector`
+- Create `documents` table
+- Generate embeddings with `nomic-embed-text`
+- Build similarity search (`match_documents`)
+- Connect retrieved context to chat (`/api/chat-rag`)
+- Upload plain text documents
+- Upload PDF, extract text, chunk, embed
+- Store original PDF in Supabase Storage
 
-🎯 **Focus:** chat with your own documents, with frontend and backend separated.
+🎯 **Focus:** chat with your own documents.
 
-### 📅 Week 4 — Tool Calling + Simple Agent
+### 📅 Week 7 — NestJS Backend for RAG
 
-- Learn **Tool Calling**: the model does not only write text; it can request a tool, get the result, then answer
-- Add a `calculator` tool for math
-- Add a `searchDocuments` tool for RAG / your own documents
-- Build one simple Agent that can choose and use both tools
-- New API: `POST /api/chat-agent`
+- Create NestJS project (`rag-api`)
+- Connect NestJS to Supabase
+- Implement:
+  - `POST /rag/documents`
+  - `POST /rag/search`
+  - `POST /rag/chat`
+- Keep Nuxt APIs working in parallel
+- Switch frontend between Nuxt API and NestJS API
+- Improve retrieval quality with similarity threshold
 
-🎯 **Focus:** Understand Tool Calling, then wrap it in one simple Agent + The model should call tools when needed, then answer.
+🎯 **Focus:** separate frontend and backend cleanly.
 
-### 📅 Week 5 — Simple Multi-Agent
+### 📅 Week 8+ — Next Steps (planned)
 
-- Learn **Multi-Agent**: instead of one model doing everything, a few small roles work in sequence
-- Researcher: finds facts from documents or tools
-- Writer: turns those facts into a clear answer
-- Reviewer: checks the answer and fixes mistakes
-- Keep it small: one learning example, not a large production system
+- API route unification between Nuxt and NestJS
+- Better document management UI
+- Auth and per-user documents
+- Agents / Tool Calling
+- Simple Multi-Agent system (Researcher + Writer + Reviewer)
+- Web search tool with an official API (Google Custom Search or similar)
+- Observability (e.g. Langfuse)
+- Deployment
 
-🎯 **Focus:** split work across simple roles, not a large system.
+---
 
-### 📅 Week 6 — IoT AI Dashboard
+## 🤖 Future: Agents + Web Search
 
-- Show sensor data on a dashboard
-- Smart analysis of sensor data
-- Professional UI with Pinia / VueUse / Nuxt
-- Connect the dashboard to the NestJS backend
+After RAG is stable, the roadmap continues with:
 
-🎯 **Focus:** show data and let AI explain it.
-
-### 📅 Week 7 — Short Auth + Conceptual Observability
-
-- Short authentication and basic security
-- Introduction to per-user documents
-- Conceptual Langfuse / logging
-
-🎯 **Focus:** understand auth and traces, not a full production platform.
-
-### 📅 Week 8 — Deploy + Final README
-
-- Final Optimizations and tests
-- Deploy on Vercel
-- Final README, tags, resume and portfolio notes
-
-🎯 **Focus:** a project you can show.
+1. **Tool Calling** — the model can call tools when needed
+2. **Simple Multi-Agent** — Researcher, Writer, Reviewer
+3. **Authorized Web Search API** — combine private Supabase knowledge with up-to-date public information
 
 ---
 
@@ -207,11 +207,11 @@ Later weeks may add keys for Langfuse. Keep those in `.env` as well.
 
 ### NestJS (`localhost:3002`)
 
-| Method | Endpoint     | Description       |
-| ------ | ------------ | ----------------- |
-| POST   | `/documents` | Upload text       |
-| POST   | `/search`    | Similarity search |
-| POST   | `/chat-rag`  | RAG chat (NestJS) |
+| Method | Endpoint         | Description       |
+| ------ | ---------------- | ----------------- |
+| POST   | `/rag/documents` | Upload text       |
+| POST   | `/rag/search`    | Similarity search |
+| POST   | `/rag/chat`      | RAG chat (NestJS) |
 
 ---
 
@@ -222,7 +222,7 @@ Later weeks may add keys for Langfuse. Keep those in `.env` as well.
 - `v0.5.0-rag`
 - `v0.5.0-before-monorepo`
 - `v0.6.0-monorepo`
-  ...
+- ...
 
 Check a specific stage:
 
@@ -240,16 +240,13 @@ git checkout main
 
 ## 🎯 Learning Goal
 
-Move from Full Stack skills (Nuxt / TypeScript) toward AI Engineering by building:
+Move from Full Stack Developer skills (Nuxt / TypeScript) toward AI Engineering by building:
 
 1. 💬 Streaming LLM chat
 2. 🔄 Model switching
 3. 📚 RAG over private documents
 4. 🔍 Vector search
 5. 🧱 A dedicated NestJS AI backend
-6. 🛠️ Tool calling and a simple agent
-7. 📡 An IoT dashboard with AI analysis
-8. 🔐 Short auth, observability, and deployment
 
 ---
 
@@ -259,7 +256,6 @@ Move from Full Stack skills (Nuxt / TypeScript) toward AI Engineering by buildin
 - Local models are intentionally small for speed and lower hardware needs
 - Cloud models (like Grok) are optional for comparison
 - Service role keys must stay only on the server
-- Week 7 is an introduction, not a full production auth/observability stack
 
 ---
 
