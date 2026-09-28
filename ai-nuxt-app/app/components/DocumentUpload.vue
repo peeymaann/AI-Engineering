@@ -1,8 +1,8 @@
 <template>
 	<div class="rounded-2xl border border-default bg-default p-4 shadow-sm transition-colors hover:bg-default/50">
-		<h2 id="docs-heading" class="text-base font-semibold text-highlighted">افزودن سند</h2>
+		<h2 id="docs-heading" class="text-base font-semibold text-highlighted">{{ t("addDocument") }}</h2>
 		<p class="mt-1 text-sm text-muted">
-			متن را وارد کنید یا یک PDF آپلود کنید تا در دانش RAG ذخیره شود.
+			{{ t("ragText") }}
 		</p>
 
 		<textarea
@@ -10,14 +10,14 @@
 			name="document-content"
 			autocomplete="off"
 			rows="5"
-			class="mt-3 w-full rounded-xl border border-default bg-elevated/30 p-3 text-sm outline-none focus:border-primary"
-			placeholder="متن سند را اینجا بنویسید..."
+			class="mt-3 w-full resize-none rounded-xl border border-default bg-elevated/30 p-3 text-sm outline-none focus:border-primary"
+			:placeholder="t('writeDocument')"
 			:disabled="loading"
 		/>
 
 		<div class="mt-3 flex flex-wrap items-center gap-3">
 			<UButton :loading="loading" :disabled="!content.trim() || loading" @click="upload">
-				ذخیره متن
+				{{ t("saveText") }}
 			</UButton>
 
 			<label class="inline-flex cursor-pointer">
@@ -29,7 +29,7 @@
 					@change="onPdfChange"
 				>
 				<UButton as="span" color="neutral" variant="outline" :loading="loading" :disabled="loading">
-					آپلود PDF
+					{{ t("uploadPdf") }}
 				</UButton>
 			</label>
 
@@ -41,6 +41,8 @@
 </template>
 
 <script setup lang="ts">
+
+const { t } = useI18n()
 const content = ref('')
 const loading = ref(false)
 const status = ref<{ ok: boolean; text: string } | null>(null)

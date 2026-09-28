@@ -5,7 +5,7 @@
 	"packageManager": "pnpm@12.4.1+sha512.2e81e399d73fe8390dab25e06aa788ab7a5908248d2f5a370f82b481147a6a7a367bf8048f9a6fdb6460f21a66f0542dedb8b94ca2c8723596741920b1656d4c",
 	"scripts": {
 		"build": "nuxt build",
-		"dev": "nuxt dev",
+		"dev": "nuxt dev -o",
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare"
@@ -16,6 +16,7 @@
 		"@iconify-json/lucide": "^1.2.132",
 		"@nuxt/a11y": "1.0.0-alpha.1",
 		"@nuxt/ui": "4.11.1",
+		"@nuxtjs/i18n": "^10.6.0",
 		"@pinia/nuxt": "^1.0.2",
 		"@supabase/supabase-js": "^2.116.0",
 		"@vueuse/nuxt": "^14.4.0",

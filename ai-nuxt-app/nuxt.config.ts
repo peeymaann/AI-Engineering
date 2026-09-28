@@ -10,6 +10,7 @@ export default defineNuxtConfig({
 		'@pinia/nuxt',
 		'@vueuse/nuxt',
 		'@nuxt/a11y',
+		'@nuxtjs/i18n',
 	],
 
 	css: ['~/assets/css/main.css'],
@@ -43,5 +44,21 @@ export default defineNuxtConfig({
 		supabaseUrl: '',
 		supabaseAnonKey: '',
 		supabaseServiceRoleKey: '',
+	},
+
+	i18n: {
+		locales: [
+			{ code: 'fa', language: 'fa-IR', name: 'فارسی', dir: 'rtl' },
+			{ code: 'en', language: 'en-US', name: 'English', dir: 'ltr' },
+		],
+		defaultLocale: 'fa',
+		strategy: 'no_prefix',
+		detectBrowserLanguage: {
+			useCookie: true,
+			cookieKey: 'i18n_redirected',
+			alwaysRedirect: false,
+			fallbackLocale: 'fa',
+		},
+		vueI18n: './i18n.config.ts',
 	},
 })
