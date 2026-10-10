@@ -1,6 +1,7 @@
 import { embed } from 'ai'
 import { createOllama } from 'ollama-ai-provider-v2'
 import { PDFParse } from 'pdf-parse'
+import { serverSupabaseUser } from '#supabase/server'
 import { useServerSupabaseAdmin } from '../utils/supabase-admin'
 
 const ollama = createOllama({
@@ -8,6 +9,13 @@ const ollama = createOllama({
 })
 
 export default defineEventHandler(async (event) => {
+	const user = await serverSupabaseUser(event)
+	const userId = user?.id || user?.sub
+
+	if (!userId) {
+		throw createError({ statusCode: 401, statusMessage: 'Login required' })
+	}
+
 	const form = await readMultipartFormData(event)
 	const file = form?.find((item) => item.name === 'file')
 
@@ -19,11 +27,7 @@ export default defineEventHandler(async (event) => {
 	}
 
 	const supabase = useServerSupabaseAdmin()
-	const filename = `${Date.now()}-${file.filename || 'upload.pdf'}`
-
-
-	// ۱) ذخیره خود فایل PDF
-	// 1) Saving the PDF file itself
+	const filename = `${userId}/${Date.now()}-${file.filename || 'upload.pdf'}`
 
 	const { error: storageError } = await supabase.storage
 		.from('documents')
@@ -39,8 +43,6 @@ export default defineEventHandler(async (event) => {
 		})
 	}
 
-	// ۲) استخراج متن
-	// 2) Text extraction
 	const parser = new PDFParse({ data: file.data })
 	const parsed = await parser.getText()
 	await parser.destroy()
@@ -53,8 +55,6 @@ export default defineEventHandler(async (event) => {
 		})
 	}
 
-	// ۳) تکه‌تکه + Embedding + ذخیره در جدول
-	// 3) Chunking + Embedding + Saving to table
 	const chunkSize = 500
 	const chunks: string[] = []
 	for (let i = 0; i < text.length; i += chunkSize) {
@@ -77,6 +77,7 @@ export default defineEventHandler(async (event) => {
 				filename: file.filename || 'unknown.pdf',
 				storage_path: filename,
 			},
+			user_id: userId,
 		})
 
 		if (error) {
@@ -95,5 +96,4 @@ export default defineEventHandler(async (event) => {
 		pages: parsed.total,
 		storage_path: filename,
 	}
-
 })

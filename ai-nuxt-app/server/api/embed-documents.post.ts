@@ -1,17 +1,18 @@
 import { embed } from 'ai'
 import { createOllama } from 'ollama-ai-provider-v2'
-import { useServerSupabase } from '../utils/supabase'
+import { useServerSupabaseAdmin } from '../utils/supabase-admin'
 
 const ollama = createOllama({
 	baseURL: 'http://localhost:11434/api',
 })
 
 export default defineEventHandler(async () => {
-	const supabase = useServerSupabase()
+	const supabase = useServerSupabaseAdmin()
 
 	const { data: docs, error } = await supabase
 		.from('documents')
 		.select('id, content')
+		.is('embedding', null)
 
 	if (error) {
 		return { ok: false, message: error.message }
@@ -36,11 +37,7 @@ export default defineEventHandler(async () => {
 			.select('id')
 
 		if (updateError) {
-			return {
-				ok: false,
-				message: updateError.message,
-				updated,
-			}
+			return { ok: false, message: updateError.message, updated }
 		}
 
 		if (!updatedRows?.length) {
@@ -54,8 +51,5 @@ export default defineEventHandler(async () => {
 		updated++
 	}
 
-	return {
-		ok: true,
-		updated,
-	}
+	return { ok: true, updated }
 })

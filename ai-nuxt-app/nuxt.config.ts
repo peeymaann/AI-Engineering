@@ -2,13 +2,14 @@
 import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
-	compatibilityDate: '2025-07-15',
+	compatibilityDate: '2026-10-04',
 	devtools: { enabled: false },
 
 	modules: [
 		'@nuxt/ui',
 		'@pinia/nuxt',
 		'@vueuse/nuxt',
+		'@nuxtjs/supabase',
 		'@nuxt/a11y',
 		'@nuxtjs/i18n',
 	],
@@ -44,6 +45,18 @@ export default defineNuxtConfig({
 		supabaseUrl: '',
 		supabaseAnonKey: '',
 		supabaseServiceRoleKey: '',
+	},
+
+	// .env stores NUXT_SUPABASE_URL and NUXT_SUPABASE_ANON_KEY.
+	// @nuxtjs/supabase only reads NUXT_PUBLIC_SUPABASE_URL / NUXT_PUBLIC_SUPABASE_KEY,
+	// and its plugin throws before Pinia is installed when those are empty.
+	supabase: {
+		url: process.env.NUXT_SUPABASE_URL,
+		key: process.env.NUXT_SUPABASE_ANON_KEY,
+		redirect: false,
+		// ~/ is the app/ directory. Without this file the module types
+		// Database as unknown, and .insert() then expects never[].
+		types: '~/types/database.types.ts',
 	},
 
 	i18n: {

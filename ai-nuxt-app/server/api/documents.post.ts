@@ -9,6 +9,7 @@ const ollama = createOllama({
 export default defineEventHandler(async (event) => {
 	const body = await readBody(event)
 	const content = body?.content?.trim()
+	const userId = readUserId(body?.user_id)
 
 	if (!content || typeof content !== 'string') {
 		throw createError({
@@ -36,6 +37,7 @@ export default defineEventHandler(async (event) => {
 			content: chunk,
 			embedding,
 			metadata: { source: 'manual-upload' },
+			...(userId ? { user_id: userId } : {}),
 		})
 
 		if (error) {
@@ -53,3 +55,14 @@ export default defineEventHandler(async (event) => {
 		saved,
 	}
 })
+
+function readUserId(value: unknown) {
+	if (value == null || value === '') return null
+	if (typeof value !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value)) {
+		throw createError({
+			statusCode: 400,
+			statusMessage: 'user_id must be a UUID',
+		})
+	}
+	return value
+}

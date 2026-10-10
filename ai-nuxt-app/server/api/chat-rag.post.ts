@@ -4,7 +4,9 @@ import {
 	streamText,
 	type UIMessage,
 } from 'ai'
+import { startObservation } from '@langfuse/tracing'
 import { createOllama } from 'ollama-ai-provider-v2'
+import { serverSupabaseUser } from '#supabase/server'
 import { useServerSupabase } from '../utils/supabase'
 
 const ollama = createOllama({
@@ -12,12 +14,16 @@ const ollama = createOllama({
 })
 
 export default defineEventHandler(async (event) => {
+	const user = await serverSupabaseUser(event)
+	const userId = user?.id || user?.sub
+
+	if (!userId) {
+		throw createError({ statusCode: 401, statusMessage: 'Login required' })
+	}
+
 	const { messages }: { messages: UIMessage[] } = await readBody(event)
 
-	// آخرین پیام کاربر
-	const lastUserMessage = [...messages]
-		.reverse()
-		.find((m) => m.role === 'user')
+	const lastUserMessage = [...messages].reverse().find((m) => m.role === 'user')
 
 	const question =
 		lastUserMessage?.parts
@@ -34,18 +40,16 @@ export default defineEventHandler(async (event) => {
 		})
 	}
 
-	// ۱) Embedding سؤال
 	const { embedding } = await embed({
 		model: ollama.embedding('nomic-embed-text'),
 		value: question,
 	})
 
-	// ۲) جستجوی اسناد مرتبط
 	const supabase = useServerSupabase()
 	const { data: matches, error } = await supabase.rpc('match_documents', {
 		query_embedding: embedding,
-		match_threshold: 0.3,
 		match_count: 3,
+		filter_user_id: userId,
 	})
 
 	if (error) {
@@ -59,17 +63,32 @@ export default defineEventHandler(async (event) => {
 		matches?.map((m: any) => m.content).join('\n\n') ||
 		'هیچ سند مرتبطی پیدا نشد.'
 
-	// ۳) پاسخ مدل با context
+	const generation = startObservation(
+		'chat-rag',
+		{
+			model: 'gemma2:2b',
+			input: question,
+			metadata: { userId, matches: matches?.length ?? 0 },
+		},
+		{ asType: 'generation' },
+	)
+
 	const result = streamText({
 		model: ollama('gemma2:2b'),
-		system: `تو یک دستیار فارسی‌زبان هستی.
-فقط بر اساس اطلاعات زیر جواب بده.
-اگر جواب در اطلاعات نبود، بگو: «در اسناد موجود پیدا نکردم.»
+		system: `تو دستیار کاربر هستی و فارسی جواب می‌دهی.
+متن‌های زیر اسناد خود کاربر است، نه حرف تو.
+اگر سند با «من» نوشته شده، آن «من» کاربر است.
+به کاربر با «تو» جواب بده. هرگز نگو «من عاشق ... هستم».
+فقط از اسناد جواب بده. اگر سند کافی نبود بگو: «در اسناد موجود پیدا نکردم.»
 
-اطلاعات:
+اسناد:
 ${context}`,
 		messages: await convertToModelMessages(messages),
-		temperature: 0.3,
+		temperature: 0.2,
+		onFinish: ({ text }) => {
+			generation.update({ output: text })
+			generation.end()
+		},
 	})
 
 	return result.toUIMessageStreamResponse()
