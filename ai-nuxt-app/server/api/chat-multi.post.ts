@@ -5,6 +5,7 @@ import {
 	streamText,
 	type UIMessage,
 } from 'ai'
+import { xai } from '@ai-sdk/xai'
 import { createOllama } from 'ollama-ai-provider-v2'
 import { useServerSupabase } from '../utils/supabase'
 
@@ -19,11 +20,10 @@ export default defineEventHandler(async (event) => {
 
 	const question =
 		lastUserMessage?.parts
-			?.filter((p: any) => p.type === 'text')
-			?.map((p: any) => p.text)
-			?.join(' ') ||
-		(lastUserMessage as any)?.content ||
-		''
+			.filter((part): part is { type: 'text'; text: string } => part.type === 'text')
+			.map((part) => part.text)
+			.join(' ')
+			.trim() ?? ''
 
 	if (!question) {
 		throw createError({
@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
 		})
 	}
 
-	// 1) Researcher: سند مرتبط را پیدا کن
+	// Researcher: same embedding space as the stored documents (nomic-embed-text).
 	const { embedding } = await embed({
 		model: ollama.embedding('nomic-embed-text'),
 		value: question,
@@ -52,13 +52,16 @@ export default defineEventHandler(async (event) => {
 		})
 	}
 
+	const rows = (matches ?? []) as Array<{ content?: string | null }>
 	const researchNotes =
-		matches?.map((m: any) => m.content).join('\n\n') ||
-		'هیچ سند مرتبطی پیدا نشد.'
+		rows
+			.map((row) => row.content)
+			.filter((content): content is string => Boolean(content))
+			.join('\n\n') || 'هیچ سند مرتبطی پیدا نشد.'
 
-	// 2) Writer: پیش‌نویس جواب
+	// Writer
 	const { text: draft } = await generateText({
-		model: ollama('gemma2:2b'),
+		model: xai('grok-4.7'),
 		temperature: 0.3,
 		prompt: `نقش تو Writer است.
 فقط از یادداشت‌های محقق استفاده کن.
@@ -72,25 +75,18 @@ ${question}
 ${researchNotes}`,
 	})
 
-	// 3) Reviewer: نسخه نهایی را استریم کن
+	// Reviewer (استریم)
 	const result = streamText({
-		model: ollama('gemma2:2b'),
+		model: xai('grok-4.7'),
 		temperature: 0.2,
 		messages: await convertToModelMessages(messages),
 		system: `تو فقط پاسخ نهایی را برای کاربر می‌نویسی.
 فارسی، کوتاه و طبیعی حرف بزن.
 درباره نقش Researcher یا Writer یا Reviewer چیزی نگو.
-کلمه‌های Reviewer's response، Number، draft، matches را ننویس.
 اگر سؤال سلام است، فقط سلام کن.
 اگر سؤال از اسناد است، فقط از یادداشت محقق استفاده کن.
-اگر فارسی سوال شد، فقط فارسی بنویس. اگر انگلیسی سوال شد، فقط انگلیسی بنویس. ایموجی نگذار.
+اگر فارسی سوال شد، فقط فارسی بنویس. اگر انگلیسی سوال شد، فقط انگلیسی بنویس.
 اگر در یادداشت نبود بگو: در اسناد موجود پیدا نکردم.
-جواب سلام فقط سلام چطور میتونم کمکت کنم؟ باشه. اگر سوالی بود بگو. اگر سوالی نبود بگو:سلام، چطور میتونم کمکتون کنم؟.
-در جواب سلام بگو سلام
-در جواب سلام نگو how can I help you?
-در جواب hi بگو، Hi, how can I help you?
-جواب را فقط فارسی بنویس. عدد را با رقم و کلمهٔ «میلیون تومان» بیاور.
-fifty million نگو، بگو ۵۰ میلیون تومان
 
 یادداشت محقق:
 ${researchNotes}
@@ -98,5 +94,6 @@ ${researchNotes}
 پیش‌نویس داخلی (فقط برای اصلاح؛ برای کاربر تکرار نکن):
 ${draft}`,
 	})
+
 	return result.toUIMessageStreamResponse()
 })

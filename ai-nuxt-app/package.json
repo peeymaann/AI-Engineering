@@ -11,6 +11,7 @@
 		"postinstall": "nuxt prepare"
 	},
 	"dependencies": {
+		"@ai-sdk/google": "^4.0.98",
 		"@ai-sdk/vue": "^4.0.99",
 		"@ai-sdk/xai": "^4.0.58",
 		"@iconify-json/lucide": "^1.2.132",

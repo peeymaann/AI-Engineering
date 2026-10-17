@@ -85,6 +85,10 @@ export default defineEventHandler(async (event) => {
 ${context}`,
 		messages: await convertToModelMessages(messages),
 		temperature: 0.2,
+		experimental_telemetry: {
+			isEnabled: true,
+			functionId: 'chat-rag',
+		},
 		onFinish: ({ text }) => {
 			generation.update({ output: text })
 			generation.end()
