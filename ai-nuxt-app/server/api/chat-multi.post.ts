@@ -5,9 +5,13 @@ import {
 	streamText,
 	type UIMessage,
 } from 'ai'
-import { xai } from '@ai-sdk/xai'
 import { google } from '@ai-sdk/google'
+import { createOllama } from 'ollama-ai-provider-v2'
 import { useServerSupabase } from '../utils/supabase'
+
+const ollama = createOllama({
+	baseURL: 'http://localhost:11434/api',
+})
 
 export default defineEventHandler(async (event) => {
 	const { messages }: { messages: UIMessage[] } = await readBody(event)
@@ -28,9 +32,9 @@ export default defineEventHandler(async (event) => {
 		})
 	}
 
-	// Embedding با مدل ابری Google
+	// Researcher: embedding با Ollama (همان قبلی)
 	const { embedding } = await embed({
-		model: google.embedding('gemini-embedding-001') as unknown as Parameters<typeof embed>[0]['model'],
+		model: ollama.embedding('nomic-embed-text'),
 		value: question,
 	})
 
@@ -55,9 +59,9 @@ export default defineEventHandler(async (event) => {
 			.filter((content): content is string => Boolean(content))
 			.join('\n\n') || 'هیچ سند مرتبطی پیدا نشد.'
 
-	// Writer
+	// Writer — جایگزینی Grok با Gemini
 	const { text: draft } = await generateText({
-		model: xai('grok-4'),
+		model: google('gemini-2.5-flash') as unknown as Parameters<typeof generateText>[0]['model'],
 		temperature: 0.3,
 		prompt: `نقش تو Writer است.
 فقط از یادداشت‌های محقق استفاده کن.
@@ -71,9 +75,9 @@ ${question}
 ${researchNotes}`,
 	})
 
-	// Reviewer (استریم)
+	// Reviewer — جایگزینی Grok با Gemini
 	const result = streamText({
-		model: xai('grok-4'),
+		model: google('gemini-2.5-flash') as unknown as Parameters<typeof streamText>[0]['model'],
 		temperature: 0.2,
 		messages: await convertToModelMessages(messages),
 		system: `تو فقط پاسخ نهایی را برای کاربر می‌نویسی.
