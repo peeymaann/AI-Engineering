@@ -13,6 +13,16 @@ const ollama = createOllama({
 	baseURL: 'http://localhost:11434/api',
 })
 
+function getEmbeddingModel() {
+	// فقط روی Vercel (وقتی این متغیر true باشد) از Gemini Embedding استفاده می‌شود
+	if (process.env.USE_GEMINI_EMBEDDING === 'true') {
+		return google.embedding('gemini-embedding-001')
+	}
+
+	// روی لپ‌تاپ از Ollama استفاده می‌شود
+	return ollama.embedding('nomic-embed-text')
+}
+
 export default defineEventHandler(async (event) => {
 	const { messages }: { messages: UIMessage[] } = await readBody(event)
 
@@ -32,9 +42,9 @@ export default defineEventHandler(async (event) => {
 		})
 	}
 
-	// Researcher: embedding با Ollama (همان قبلی)
+	// Embedding شرطی
 	const { embedding } = await embed({
-		model: ollama.embedding('nomic-embed-text'),
+		model: getEmbeddingModel(),
 		value: question,
 	})
 
@@ -59,9 +69,9 @@ export default defineEventHandler(async (event) => {
 			.filter((content): content is string => Boolean(content))
 			.join('\n\n') || 'هیچ سند مرتبطی پیدا نشد.'
 
-	// Writer — جایگزینی Grok با Gemini
+	// Writer
 	const { text: draft } = await generateText({
-		model: google('gemini-3.8-flash') as unknown as Parameters<typeof generateText>[0]['model'],
+		model: google('gemini-2.5-flash'),
 		temperature: 0.3,
 		prompt: `نقش تو Writer است.
 فقط از یادداشت‌های محقق استفاده کن.
@@ -75,9 +85,9 @@ ${question}
 ${researchNotes}`,
 	})
 
-	// Reviewer — جایگزینی Grok با Gemini
+	// Reviewer
 	const result = streamText({
-		model: google('gemini-3.8-flash') as unknown as Parameters<typeof streamText>[0]['model'],
+		model: google('gemini-2.5-flash'),
 		temperature: 0.2,
 		messages: await convertToModelMessages(messages),
 		system: `تو فقط پاسخ نهایی را برای کاربر می‌نویسی.
