@@ -6,12 +6,8 @@ import {
 	type UIMessage,
 } from 'ai'
 import { xai } from '@ai-sdk/xai'
-import { createOllama } from 'ollama-ai-provider-v2'
+import { google } from '@ai-sdk/google'
 import { useServerSupabase } from '../utils/supabase'
-
-const ollama = createOllama({
-	baseURL: 'http://localhost:11434/api',
-})
 
 export default defineEventHandler(async (event) => {
 	const { messages }: { messages: UIMessage[] } = await readBody(event)
@@ -32,9 +28,9 @@ export default defineEventHandler(async (event) => {
 		})
 	}
 
-	// Researcher: same embedding space as the stored documents (nomic-embed-text).
+	// Embedding با مدل ابری Google
 	const { embedding } = await embed({
-		model: ollama.embedding('nomic-embed-text'),
+		model: google.embedding('gemini-embedding-001') as unknown as Parameters<typeof embed>[0]['model'],
 		value: question,
 	})
 
@@ -61,7 +57,7 @@ export default defineEventHandler(async (event) => {
 
 	// Writer
 	const { text: draft } = await generateText({
-		model: xai('grok-4.7'),
+		model: xai('grok-4'),
 		temperature: 0.3,
 		prompt: `نقش تو Writer است.
 فقط از یادداشت‌های محقق استفاده کن.
@@ -77,7 +73,7 @@ ${researchNotes}`,
 
 	// Reviewer (استریم)
 	const result = streamText({
-		model: xai('grok-4.7'),
+		model: xai('grok-4'),
 		temperature: 0.2,
 		messages: await convertToModelMessages(messages),
 		system: `تو فقط پاسخ نهایی را برای کاربر می‌نویسی.

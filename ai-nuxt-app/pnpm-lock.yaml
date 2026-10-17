@@ -170,11 +170,11 @@ importers:
         specifier: ^4.0.98
         version: 4.0.98(zod@4.6.5)
       '@ai-sdk/vue':
-        specifier: ^4.0.99
-        version: 4.0.99(vue@3.5.42(typescript@7.0.2))(zod@4.6.5)
+        specifier: ^4.0.142
+        version: 4.0.142(vue@3.5.42(typescript@7.0.2))(zod@4.6.5)
       '@ai-sdk/xai':
-        specifier: ^4.0.58
-        version: 4.0.58(zod@4.6.5)
+        specifier: ^5.0.23
+        version: 5.0.23(zod@4.6.5)
       '@iconify-json/lucide':
         specifier: ^1.2.132
         version: 1.2.132
@@ -189,7 +189,7 @@ importers:
         version: 1.0.0-alpha.1(magic-string@1.3.1)(magicast@0.5.5)(oxc-parser@0.141.0)(rolldown@1.2.8)(unplugin@3.3.0(esbuild@0.28.2)(rolldown@1.2.8)(rollup@4.63.2)(vite@8.3.0(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)))(vite@8.3.0(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))
       '@nuxt/ui':
         specifier: 4.11.1
-        version: 4.11.1(ad5da9d0f4ebaa02b5754b6499771531)
+        version: 4.11.1(7c088bfd25a24d8a22cdbc69d25450eb)
       '@nuxtjs/i18n':
         specifier: ^10.6.0
         version: 10.6.0(@vue/compiler-dom@3.5.42)(db0@0.3.4)(esbuild@0.28.2)(eslint@10.11.0(jiti@2.7.0)(supports-color@10.2.2))(ioredis@5.11.1(supports-color@10.2.2))(magicast@0.5.5)(pinia@4.0.3(@vue/devtools-api@8.2.1)(typescript@7.0.2)(vue@3.5.42(typescript@7.0.2)))(rolldown@1.2.8)(rollup@4.63.2)(supports-color@10.2.2)(typescript@7.0.2)(vite@8.3.0(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))(vue@3.5.42(typescript@7.0.2))
@@ -209,14 +209,14 @@ importers:
         specifier: ^14.4.0
         version: 14.4.0(171b5114ac030ba03cf4ef08da44eb5e)
       ai:
-        specifier: ^7.0.99
-        version: 7.0.99(zod@4.6.5)
+        specifier: ^7.0.142
+        version: 7.0.142(zod@4.6.5)
       nuxt:
         specifier: ^4.5.2
         version: 4.5.2(@babel/plugin-syntax-jsx@7.29.7(@babel/core@7.29.7(supports-color@10.2.2)))(@babel/plugin-syntax-typescript@7.29.7(@babel/core@7.29.7(supports-color@10.2.2)))(@oxc-project/types@0.149.0)(@parcel/watcher@2.5.6)(@types/node@26.5.1)(@vitejs/devtools-kit@0.4.9(srvx@0.11.22)(typescript@7.0.2)(vite@8.3.0(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)))(@vue/compiler-sfc@3.5.42)(db0@0.3.4)(esbuild@0.28.2)(eslint@10.11.0(jiti@2.7.0)(supports-color@10.2.2))(ioredis@5.11.1(supports-color@10.2.2))(lightningcss@1.33.0)(magicast@0.5.5)(optionator@0.9.4)(oxc-parser@0.141.0)(pinia@4.0.3(@vue/devtools-api@8.2.1)(typescript@7.0.2)(vue@3.5.42(typescript@7.0.2)))(rolldown@1.2.8)(rollup-plugin-visualizer@7.1.1(rolldown@1.2.8)(rollup@4.63.2))(rollup@4.63.2)(srvx@0.11.22)(supports-color@10.2.2)(terser@5.51.2)(typescript@7.0.2)(vite@8.3.0(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))(yaml@2.9.0)
       ollama-ai-provider-v2:
         specifier: ^4.0.1
-        version: 4.0.1(ai@7.0.99(zod@4.6.5))(zod@4.6.5)
+        version: 4.0.1(ai@7.0.142(zod@4.6.5))(zod@4.6.5)
       pdf-parse:
         specifier: ^2.4.5
         version: 2.4.5
@@ -245,8 +245,8 @@ importers:
 
 packages:
 
-  '@ai-sdk/gateway@4.0.80':
-    resolution: {integrity: sha512-6t+07o8lSthpKf64Xb1qHWR2bWvJ3Fd2oFvS9fQc45p31bi2OUqan246e/ojAmZpWCiMPjKyQ4TBr4MYytnTiQ==, tarball: https://registry.npmjs.org/@ai-sdk/gateway/-/gateway-4.0.80.tgz}
+  '@ai-sdk/gateway@4.0.115':
+    resolution: {integrity: sha512-Xn+gDWM4Ti2FzYmxhlZtjEuGBGZlOYaQMpwcVRSN4c9qCMUszD5F5TAbkxgLV/tHKeMfEX+WEuTCl6Kkj2r73A==, tarball: https://registry.npmjs.org/@ai-sdk/gateway/-/gateway-4.0.115.tgz}
     engines: {node: '>=22'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -257,34 +257,24 @@ packages:
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
 
-  '@ai-sdk/provider-utils@5.0.40':
-    resolution: {integrity: sha512-zsXPwSAQ9mRJ2hvyITaLOYUyuGrBmzFhJXOg4mllGmla1PfNxZcm4GwqMiV2xQaDgcgBMdUGxXkp9xekZZNIkg==, tarball: https://registry.npmjs.org/@ai-sdk/provider-utils/-/provider-utils-5.0.40.tgz}
-    engines: {node: '>=22'}
-    peerDependencies:
-      zod: ^3.25.76 || ^4.1.8
-
   '@ai-sdk/provider-utils@5.0.61':
     resolution: {integrity: sha512-Y+Z3539UXw0ctFDNepTtG23VqBQHr2A6yI2qUxvQcg75DJYgJoD2F9U2Vp5OgQjX7lxto1BLgFtKuOhzrr52vQ==, tarball: https://registry.npmjs.org/@ai-sdk/provider-utils/-/provider-utils-5.0.61.tgz}
     engines: {node: '>=22'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
 
-  '@ai-sdk/provider@4.0.14':
-    resolution: {integrity: sha512-yukP2tbcQQErG5gLCMBGvpvb/rM3D3KlTKG6eKKOdNHLHqtNNDEeBxdYrY/JL+O76B2ig5dXY19H/f1HFSvRiQ==, tarball: https://registry.npmjs.org/@ai-sdk/provider/-/provider-4.0.14.tgz}
-    engines: {node: '>=22'}
-
   '@ai-sdk/provider@4.0.28':
     resolution: {integrity: sha512-6ThcmkJQXSMlBrf6mirIjUUS04Q5/kApbYTOzd5lZfYXLa1XPpnDLxP/G96/DKc00fDIUOW9S2ls0mSzb0+l9w==, tarball: https://registry.npmjs.org/@ai-sdk/provider/-/provider-4.0.28.tgz}
     engines: {node: '>=22'}
 
-  '@ai-sdk/vue@4.0.99':
-    resolution: {integrity: sha512-PYkl3SkCsK5bZRSfWOZ8/BebbbEXxuu+65n4wk5Vimd0ERfu7Bz4qpUU1MTs3b/tLpzyB06YGIp7cAbj9InCMg==, tarball: https://registry.npmjs.org/@ai-sdk/vue/-/vue-4.0.99.tgz}
+  '@ai-sdk/vue@4.0.142':
+    resolution: {integrity: sha512-YwenE45AIdtph5Yl90gRps1+i3DVsR8C3jHP3HPEsBL18c62pzB4s0XeWN2MJ6xSGlcSQgH7E8fY1h8qMx35Qw==, tarball: https://registry.npmjs.org/@ai-sdk/vue/-/vue-4.0.142.tgz}
     engines: {node: '>=22'}
     peerDependencies:
       vue: ^3.3.4
 
-  '@ai-sdk/xai@4.0.58':
-    resolution: {integrity: sha512-7STmRResOmfHQ5CjKEeAcpOhiwmvZ2ztmXmofYa+30r7xX2bfz/R+tL2WaMwRODenf2ap2TLF1klNJVGornrfw==, tarball: https://registry.npmjs.org/@ai-sdk/xai/-/xai-4.0.58.tgz}
+  '@ai-sdk/xai@5.0.23':
+    resolution: {integrity: sha512-9JwUXTl7LH+R87omg1ZyYjz7ERWCNrI26cXkc57tsA7U4cG97neRARjCLIDzQwUULDv8FG4NHQOEroFPwOxipQ==, tarball: https://registry.npmjs.org/@ai-sdk/xai/-/xai-5.0.23.tgz}
     engines: {node: '>=22'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -3176,8 +3166,8 @@ packages:
     resolution: {integrity: sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==, tarball: https://registry.npmjs.org/agent-base/-/agent-base-7.1.4.tgz}
     engines: {node: '>= 14'}
 
-  ai@7.0.99:
-    resolution: {integrity: sha512-Ov+3j/nSajaVH5hO8C94wN9wisG5tAJ8HWsLV9d/+nlzrRGUh3oYO3Kp1fRyUNWjAWLSpGLHLPaHCdfxb307Vg==, tarball: https://registry.npmjs.org/ai/-/ai-7.0.99.tgz}
+  ai@7.0.142:
+    resolution: {integrity: sha512-Tifni6/6nNhCu4GnFEeYYR7CGmJ3Yhm44SGxYrOupqP2aaZwmGGiiB5Zx4hiauJR0AWimcXULejDT+Qsj+SHOQ==, tarball: https://registry.npmjs.org/ai/-/ai-7.0.142.tgz}
     engines: {node: '>=22'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -6021,10 +6011,10 @@ packages:
 
 snapshots:
 
-  '@ai-sdk/gateway@4.0.80(zod@4.6.5)':
+  '@ai-sdk/gateway@4.0.115(zod@4.6.5)':
     dependencies:
-      '@ai-sdk/provider': 4.0.14
-      '@ai-sdk/provider-utils': 5.0.40(zod@4.6.5)
+      '@ai-sdk/provider': 4.0.28
+      '@ai-sdk/provider-utils': 5.0.61(zod@4.6.5)
       '@vercel/oidc': 3.2.0
       zod: 4.6.5
 
@@ -6032,15 +6022,6 @@ snapshots:
     dependencies:
       '@ai-sdk/provider': 4.0.28
       '@ai-sdk/provider-utils': 5.0.61(zod@4.6.5)
-      zod: 4.6.5
-
-  '@ai-sdk/provider-utils@5.0.40(zod@4.6.5)':
-    dependencies:
-      '@ai-sdk/provider': 4.0.14
-      '@standard-schema/spec': 1.1.0
-      '@workflow/serde': 4.1.0
-      eventsource-parser: 3.1.1
-      undici: 7.29.1
       zod: 4.6.5
 
   '@ai-sdk/provider-utils@5.0.61(zod@4.6.5)':
@@ -6052,27 +6033,23 @@ snapshots:
       undici: 7.29.1
       zod: 4.6.5
 
-  '@ai-sdk/provider@4.0.14':
-    dependencies:
-      json-schema: 0.4.0
-
   '@ai-sdk/provider@4.0.28':
     dependencies:
       json-schema: 0.4.0
 
-  '@ai-sdk/vue@4.0.99(vue@3.5.42(typescript@7.0.2))(zod@4.6.5)':
+  '@ai-sdk/vue@4.0.142(vue@3.5.42(typescript@7.0.2))(zod@4.6.5)':
     dependencies:
-      '@ai-sdk/provider-utils': 5.0.40(zod@4.6.5)
-      ai: 7.0.99(zod@4.6.5)
+      '@ai-sdk/provider-utils': 5.0.61(zod@4.6.5)
+      ai: 7.0.142(zod@4.6.5)
       swrv: 1.2.0(vue@3.5.42(typescript@7.0.2))
       vue: 3.5.42(typescript@7.0.2)
     transitivePeerDependencies:
       - zod
 
-  '@ai-sdk/xai@4.0.58(zod@4.6.5)':
+  '@ai-sdk/xai@5.0.23(zod@4.6.5)':
     dependencies:
-      '@ai-sdk/provider': 4.0.14
-      '@ai-sdk/provider-utils': 5.0.40(zod@4.6.5)
+      '@ai-sdk/provider': 4.0.28
+      '@ai-sdk/provider-utils': 5.0.61(zod@4.6.5)
       zod: 4.6.5
 
   '@alloc/quick-lru@5.3.0': {}
@@ -7314,7 +7291,7 @@ snapshots:
       rc9: 3.1.0
       std-env: 4.2.0
 
-  '@nuxt/ui@4.11.1(ad5da9d0f4ebaa02b5754b6499771531)':
+  '@nuxt/ui@4.11.1(7c088bfd25a24d8a22cdbc69d25450eb)':
     dependencies:
       '@floating-ui/dom': 1.8.0
       '@iconify/vue': 5.0.1(vue@3.5.42(typescript@7.0.2))
@@ -7383,7 +7360,7 @@ snapshots:
     optionalDependencies:
       '@internationalized/date': 3.12.4
       '@internationalized/number': 3.6.8
-      ai: 7.0.99(zod@4.6.5)
+      ai: 7.0.142(zod@4.6.5)
       valibot: 1.4.2(typescript@7.0.2)
       vue-router: 5.3.1(@vue/compiler-sfc@3.5.42)(esbuild@0.28.2)(pinia@4.0.3(@vue/devtools-api@8.2.1)(typescript@7.0.2)(vue@3.5.42(typescript@7.0.2)))(rolldown@1.2.8)(rollup@4.63.2)(vite@8.3.0(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))(vue@3.5.42(typescript@7.0.2))
       zod: 4.6.5
@@ -9062,11 +9039,11 @@ snapshots:
 
   agent-base@7.1.4: {}
 
-  ai@7.0.99(zod@4.6.5):
+  ai@7.0.142(zod@4.6.5):
     dependencies:
-      '@ai-sdk/gateway': 4.0.80(zod@4.6.5)
-      '@ai-sdk/provider': 4.0.14
-      '@ai-sdk/provider-utils': 5.0.40(zod@4.6.5)
+      '@ai-sdk/gateway': 4.0.115(zod@4.6.5)
+      '@ai-sdk/provider': 4.0.28
+      '@ai-sdk/provider-utils': 5.0.61(zod@4.6.5)
       zod: 4.6.5
 
   ajv@6.15.0:
@@ -10793,11 +10770,11 @@ snapshots:
 
   ohash@2.0.12: {}
 
-  ollama-ai-provider-v2@4.0.1(ai@7.0.99(zod@4.6.5))(zod@4.6.5):
+  ollama-ai-provider-v2@4.0.1(ai@7.0.142(zod@4.6.5))(zod@4.6.5):
     dependencies:
-      '@ai-sdk/provider': 4.0.14
-      '@ai-sdk/provider-utils': 5.0.40(zod@4.6.5)
-      ai: 7.0.99(zod@4.6.5)
+      '@ai-sdk/provider': 4.0.28
+      '@ai-sdk/provider-utils': 5.0.61(zod@4.6.5)
+      ai: 7.0.142(zod@4.6.5)
       zod: 4.6.5
 
   on-change@6.0.2: {}
