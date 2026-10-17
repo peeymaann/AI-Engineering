@@ -1,11 +1,11 @@
 import { convertToModelMessages, streamText, type UIMessage } from 'ai';
-import { xai } from '@ai-sdk/xai';
+import { google } from '@ai-sdk/google';
 
 export default defineEventHandler(async (event) => {
 	const { messages }: { messages: UIMessage[] } = await readBody(event);
 
 	const result = streamText({
-		model: xai('grok-4'), // یا grok-4-fast Translated > or grok-4-fast
+		model: google('gemini-2.5-flash') as Parameters<typeof streamText>[0]['model'],
 		messages: await convertToModelMessages(messages),
 		temperature: 0.7,
 	});
