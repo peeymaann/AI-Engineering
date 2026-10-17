@@ -95,6 +95,10 @@ const input = ref("");
 const chatStore = useChatStore();
 const { selectedApi, savedMessages } = storeToRefs(chatStore);
 
+if (selectedApi.value === "/api/chat-grok") {
+	selectedApi.value = "/api/chat-gemini";
+}
+
 const { messages, sendMessage, status, error, stop, regenerate, setMessages } =
 	useChat(() => ({
 		transport: new DefaultChatTransport({ api: selectedApi.value }),
@@ -106,7 +110,7 @@ const loading = computed(
 
 const apiOptions = computed(() => [
 	{ label: t("ollamaLocal"), value: "/api/chat", icon: "i-lucide-server" },
-	{ label: t("grokCloud"), value: "/api/chat-grok", icon: "i-lucide-sparkles" },
+	{ label: t("gemini"), value: "/api/chat-gemini", icon: "i-lucide-sparkles" },
 	{ label: t("ragChat"), value: "/api/chat-rag", icon: "i-lucide-book-open" },
 	{ label: t("agentChat"), value: "/api/chat-agent", icon: "i-lucide-bot" },
 	{ label: t("multiAgentChat"), value: "/api/chat-multi", icon: "i-lucide-users" },

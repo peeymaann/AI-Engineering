@@ -61,7 +61,7 @@ export default defineEventHandler(async (event) => {
 
 	// Writer — جایگزینی Grok با Gemini
 	const { text: draft } = await generateText({
-		model: google('gemini-2.5-flash') as unknown as Parameters<typeof generateText>[0]['model'],
+		model: google('gemini-3.8-flash') as unknown as Parameters<typeof generateText>[0]['model'],
 		temperature: 0.3,
 		prompt: `نقش تو Writer است.
 فقط از یادداشت‌های محقق استفاده کن.
@@ -77,7 +77,7 @@ ${researchNotes}`,
 
 	// Reviewer — جایگزینی Grok با Gemini
 	const result = streamText({
-		model: google('gemini-2.5-flash') as unknown as Parameters<typeof streamText>[0]['model'],
+		model: google('gemini-3.8-flash') as unknown as Parameters<typeof streamText>[0]['model'],
 		temperature: 0.2,
 		messages: await convertToModelMessages(messages),
 		system: `تو فقط پاسخ نهایی را برای کاربر می‌نویسی.

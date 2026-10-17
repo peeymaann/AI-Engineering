@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
 	const { messages }: { messages: UIMessage[] } = await readBody(event);
 
 	const result = streamText({
-		model: google('gemini-2.5-flash') as Parameters<typeof streamText>[0]['model'],
+		model: google('gemini-3.8-flash') as Parameters<typeof streamText>[0]['model'],
 		messages: await convertToModelMessages(messages),
 		temperature: 0.7,
 	});
