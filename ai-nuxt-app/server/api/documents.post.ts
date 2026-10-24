@@ -1,10 +1,18 @@
 import { embed } from 'ai'
+import { google } from '@ai-sdk/google'
 import { createOllama } from 'ollama-ai-provider-v2'
 import { useServerSupabaseAdmin } from '../utils/supabase-admin'
 
 const ollama = createOllama({
 	baseURL: 'http://localhost:11434/api',
 })
+
+function getEmbeddingModel() {
+	if (process.env.USE_GEMINI_EMBEDDING === 'true' || process.env.VERCEL === '1') {
+		return google.textEmbeddingModel('gemini-embedding-001')
+	}
+	return ollama.embedding('nomic-embed-text')
+}
 
 export default defineEventHandler(async (event) => {
 	const body = await readBody(event)
@@ -29,7 +37,7 @@ export default defineEventHandler(async (event) => {
 
 	for (const chunk of chunks) {
 		const { embedding } = await embed({
-			model: ollama.embedding('nomic-embed-text'),
+			model: getEmbeddingModel(),
 			value: chunk,
 		})
 

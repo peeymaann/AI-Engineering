@@ -23,8 +23,8 @@ function getChatModel() {
 }
 
 function getEmbeddingModel() {
-	if (process.env.USE_GEMINI_EMBEDDING === 'true') {
-		return google.textEmbeddingModel('text-embedding-004')
+	if (process.env.USE_GEMINI_EMBEDDING === 'true' || process.env.VERCEL === '1') {
+		return google.textEmbeddingModel('gemini-embedding-001')
 	}
 	return ollama.embedding('nomic-embed-text')
 }
