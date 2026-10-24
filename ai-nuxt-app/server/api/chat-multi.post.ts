@@ -14,13 +14,17 @@ const ollama = createOllama({
 })
 
 function getEmbeddingModel() {
-	// فقط روی Vercel (وقتی این متغیر true باشد) از Gemini Embedding استفاده می‌شود
 	if (process.env.USE_GEMINI_EMBEDDING === 'true') {
-		return google.embedding('gemini-embedding-001')
+		return google.textEmbeddingModel('text-embedding-004')
 	}
-
-	// روی لپ‌تاپ از Ollama استفاده می‌شود
 	return ollama.embedding('nomic-embed-text')
+}
+
+function getChatModel() {
+	if (process.env.USE_GEMINI_EMBEDDING === 'true') {
+		return google('gemini-3.8-flash')
+	}
+	return ollama('qwen2.5:1.5b')
 }
 
 export default defineEventHandler(async (event) => {
@@ -42,7 +46,6 @@ export default defineEventHandler(async (event) => {
 		})
 	}
 
-	// Embedding شرطی
 	const { embedding } = await embed({
 		model: getEmbeddingModel(),
 		value: question,
@@ -71,7 +74,7 @@ export default defineEventHandler(async (event) => {
 
 	// Writer
 	const { text: draft } = await generateText({
-		model: google('gemini-2.5-flash'),
+		model: getChatModel(),
 		temperature: 0.3,
 		prompt: `نقش تو Writer است.
 فقط از یادداشت‌های محقق استفاده کن.
@@ -87,7 +90,7 @@ ${researchNotes}`,
 
 	// Reviewer
 	const result = streamText({
-		model: google('gemini-2.5-flash'),
+		model: getChatModel(),
 		temperature: 0.2,
 		messages: await convertToModelMessages(messages),
 		system: `تو فقط پاسخ نهایی را برای کاربر می‌نویسی.

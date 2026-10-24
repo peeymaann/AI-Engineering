@@ -1,20 +1,30 @@
 import { defineStore } from "pinia";
 
 export const useChatStore = defineStore("chat", () => {
-	const selectedApi = ref("/api/chat");
-	const apiOptions = ref([
-		{ label: "Ollama (محلی)", value: "/api/chat", icon: "i-lucide-server" },
-		{ label: "Gemini", value: "/api/chat-gemini", icon: "i-lucide-sparkles" },
-		{ label: 'RAG (اسناد)', value: '/api/chat-rag', icon: 'i-lucide-file-search' },
-		{ label: 'RAG (NestJS)', value: 'http://localhost:3002/chat-rag', icon: 'i-lucide-network' },
-		{ label: 'Agent (ابزارها)', value: '/api/chat-agent', icon: 'i-lucide-bot' },
-		{ label: 'Multi-Agent', value: '/api/chat-multi', icon: 'i-lucide-users' },
-	]);
+	const isVercel = process.env.USE_GEMINI_EMBEDDING === 'true' || process.env.VERCEL === '1'
 
-	// تاریخچه پیام‌ها
+	const selectedApi = ref(isVercel ? "/api/chat-gemini" : "/api/chat");
+
+	const apiOptions = ref(
+		isVercel
+			? [
+				{ label: "Gemini", value: "/api/chat-gemini", icon: "i-lucide-sparkles" },
+				{ label: 'RAG (اسناد)', value: '/api/chat-rag', icon: 'i-lucide-file-search' },
+				{ label: 'Agent (ابزارها)', value: '/api/chat-agent', icon: 'i-lucide-bot' },
+				{ label: 'Multi-Agent', value: '/api/chat-multi', icon: 'i-lucide-users' },
+			]
+			: [
+				{ label: "Ollama (محلی)", value: "/api/chat", icon: "i-lucide-server" },
+				{ label: "Gemini", value: "/api/chat-gemini", icon: "i-lucide-sparkles" },
+				{ label: 'RAG (اسناد)', value: '/api/chat-rag', icon: 'i-lucide-file-search' },
+				{ label: 'RAG (NestJS)', value: 'http://localhost:3002/chat-rag', icon: 'i-lucide-network' },
+				{ label: 'Agent (ابزارها)', value: '/api/chat-agent', icon: 'i-lucide-bot' },
+				{ label: 'Multi-Agent', value: '/api/chat-multi', icon: 'i-lucide-users' },
+			]
+	);
+
 	const savedMessages = ref<any[]>([]);
 
-	// بارگذاری از localStorage
 	function loadMessages() {
 		if (import.meta.client) {
 			const data = localStorage.getItem("chat-messages");
@@ -24,7 +34,6 @@ export const useChatStore = defineStore("chat", () => {
 		}
 	}
 
-	// ذخیره در localStorage
 	function saveMessages(messages: any[]) {
 		if (import.meta.client) {
 			savedMessages.value = messages;
@@ -32,7 +41,6 @@ export const useChatStore = defineStore("chat", () => {
 		}
 	}
 
-	// پاک کردن تاریخچه
 	function clearMessages() {
 		savedMessages.value = [];
 		if (import.meta.client) {

@@ -93,7 +93,7 @@ import { DefaultChatTransport } from "ai";
 const { t } = useI18n();
 const input = ref("");
 const chatStore = useChatStore();
-const { selectedApi, savedMessages } = storeToRefs(chatStore);
+const { selectedApi, savedMessages, apiOptions } = storeToRefs(chatStore);
 
 if (selectedApi.value === "/api/chat-grok") {
 	selectedApi.value = "/api/chat-gemini";
@@ -107,14 +107,6 @@ const { messages, sendMessage, status, error, stop, regenerate, setMessages } =
 const loading = computed(
 	() => status.value === "submitted" || status.value === "streaming",
 );
-
-const apiOptions = computed(() => [
-	{ label: t("ollamaLocal"), value: "/api/chat", icon: "i-lucide-server" },
-	{ label: t("gemini"), value: "/api/chat-gemini", icon: "i-lucide-sparkles" },
-	{ label: t("ragChat"), value: "/api/chat-rag", icon: "i-lucide-book-open" },
-	{ label: t("agentChat"), value: "/api/chat-agent", icon: "i-lucide-bot" },
-	{ label: t("multiAgentChat"), value: "/api/chat-multi", icon: "i-lucide-users" },
-]);
 
 onMounted(() => {
 	chatStore.loadMessages();

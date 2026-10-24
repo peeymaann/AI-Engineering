@@ -1,18 +1,78 @@
-import { convertToModelMessages, streamText, type UIMessage } from 'ai';
-import { createOllama } from 'ollama-ai-provider-v2';
+import { embed } from 'ai'
+import { google } from '@ai-sdk/google'
+import { createOllama } from 'ollama-ai-provider-v2'
+import { useServerSupabaseAdmin } from '../utils/supabase-admin'
 
 const ollama = createOllama({
 	baseURL: 'http://localhost:11434/api',
-});
+})
+
+function getEmbeddingModel() {
+	if (process.env.USE_GEMINI_EMBEDDING === 'true') {
+		// مدل Embedding گوگل (بعداً در صورت نیاز نام دقیق را تنظیم کنید)
+		return google.textEmbeddingModel('text-embedding-004')
+	}
+
+	return ollama.embedding('nomic-embed-text')
+}
 
 export default defineEventHandler(async (event) => {
-	const { messages }: { messages: UIMessage[] } = await readBody(event);
+	const body = await readBody(event)
+	const content = body?.content?.trim()
+	const userId = readUserId(body?.user_id)
 
-	const result = streamText({
-		model: ollama('gemma2:2b'),
-		messages: await convertToModelMessages(messages),
-		temperature: 0.7,
-	});
+	if (!content || typeof content !== 'string') {
+		throw createError({
+			statusCode: 400,
+			statusMessage: 'content is required',
+		})
+	}
 
-	return result.toUIMessageStreamResponse();
-});
+	const chunkSize = 500
+	const chunks: string[] = []
+	for (let i = 0; i < content.length; i += chunkSize) {
+		chunks.push(content.slice(i, i + chunkSize))
+	}
+
+	const supabase = useServerSupabaseAdmin()
+	let saved = 0
+
+	for (const chunk of chunks) {
+		const { embedding } = await embed({
+			model: getEmbeddingModel(),
+			value: chunk,
+		})
+
+		const { error } = await supabase.from('documents').insert({
+			content: chunk,
+			embedding,
+			metadata: { source: 'manual-upload' },
+			...(userId ? { user_id: userId } : {}),
+		})
+
+		if (error) {
+			throw createError({
+				statusCode: 500,
+				statusMessage: error.message,
+			})
+		}
+
+		saved++
+	}
+
+	return {
+		ok: true,
+		saved,
+	}
+})
+
+function readUserId(value: unknown) {
+	if (value == null || value === '') return null
+	if (typeof value !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value)) {
+		throw createError({
+			statusCode: 400,
+			statusMessage: 'user_id must be a UUID',
+		})
+	}
+	return value
+}

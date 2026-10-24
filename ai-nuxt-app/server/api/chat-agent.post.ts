@@ -6,6 +6,7 @@ import {
 	stepCountIs,
 	type UIMessage,
 } from 'ai'
+import { google } from '@ai-sdk/google'
 import { createOllama } from 'ollama-ai-provider-v2'
 import { z } from 'zod'
 import { useServerSupabase } from '../utils/supabase'
@@ -13,6 +14,20 @@ import { useServerSupabase } from '../utils/supabase'
 const ollama = createOllama({
 	baseURL: 'http://localhost:11434/api',
 })
+
+function getChatModel() {
+	if (process.env.USE_GEMINI_EMBEDDING === 'true') {
+		return google('gemini-3.8-flash')
+	}
+	return ollama('qwen2.5:1.5b')
+}
+
+function getEmbeddingModel() {
+	if (process.env.USE_GEMINI_EMBEDDING === 'true') {
+		return google.textEmbeddingModel('text-embedding-004')
+	}
+	return ollama.embedding('nomic-embed-text')
+}
 
 function toEnglishDigits(text: string) {
 	const map: Record<string, string> = {
@@ -54,7 +69,7 @@ export default defineEventHandler(async (event) => {
 
 	if (needsDocuments) {
 		const { embedding } = await embed({
-			model: ollama.embedding('nomic-embed-text'),
+			model: getEmbeddingModel(),
 			value: lastText,
 		})
 
@@ -80,7 +95,7 @@ export default defineEventHandler(async (event) => {
 	}
 
 	const result = streamText({
-		model: ollama('qwen2.5:1.5b'),
+		model: getChatModel(),
 		messages: await convertToModelMessages(messages),
 		temperature: 0.1,
 		stopWhen: stepCountIs(5),
