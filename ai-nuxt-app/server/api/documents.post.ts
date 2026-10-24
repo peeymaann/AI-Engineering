@@ -35,6 +35,9 @@ export default defineEventHandler(async (event) => {
 	const supabase = useServerSupabaseAdmin()
 	let saved = 0
 
+	const isCloud = process.env.VERCEL === '1' || process.env.USE_GEMINI_EMBEDDING === 'true'
+	const embeddingColumn = isCloud ? 'embedding_gemini' : 'embedding'
+
 	for (const chunk of chunks) {
 		const { embedding } = await embed({
 			model: getEmbeddingModel(),
@@ -43,7 +46,7 @@ export default defineEventHandler(async (event) => {
 
 		const { error } = await supabase.from('documents').insert({
 			content: chunk,
-			embedding,
+			[embeddingColumn]: embedding,
 			metadata: { source: 'manual-upload' },
 			...(userId ? { user_id: userId } : {}),
 		})

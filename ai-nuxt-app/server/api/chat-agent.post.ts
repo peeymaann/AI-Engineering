@@ -16,8 +16,8 @@ const ollama = createOllama({
 })
 
 function getChatModel() {
-	if (process.env.USE_GEMINI_EMBEDDING === 'true') {
-		return google('gemini-3.8-flash')
+	if (process.env.USE_GEMINI_EMBEDDING === 'true' || process.env.VERCEL === '1') {
+		return google('gemini-2.0-flash')
 	}
 	return ollama('qwen2.5:1.5b')
 }
@@ -74,7 +74,11 @@ export default defineEventHandler(async (event) => {
 		})
 
 		const supabase = useServerSupabase()
-		const { data } = await supabase.rpc('match_documents', {
+
+		const isCloud = process.env.VERCEL === '1' || process.env.USE_GEMINI_EMBEDDING === 'true'
+		const rpcName = isCloud ? 'match_documents_gemini' : 'match_documents'
+
+		const { data } = await supabase.rpc(rpcName, {
 			query_embedding: embedding,
 			match_threshold: 0.1,
 			match_count: 3,
