@@ -9,7 +9,7 @@ const ollama = createOllama({
 function getModel() {
 	// اگر روی Vercel متغیر ست شده باشد → Gemini
 	if (process.env.USE_GEMINI_EMBEDDING === 'true') {
-		return google('gemini-2.5-flash')
+		return google('gemini-3.8-flash')
 	}
 
 	// در غیر این صورت (لپ‌تاپ) → Ollama
