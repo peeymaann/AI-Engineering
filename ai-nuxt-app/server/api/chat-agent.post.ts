@@ -17,7 +17,7 @@ const ollama = createOllama({
 
 function getChatModel() {
 	if (process.env.USE_GEMINI_EMBEDDING === 'true' || process.env.VERCEL === '1') {
-		return google('gemini-2.0-flash')
+		return google('gemini-3.8-flash')
 	}
 	return ollama('qwen2.5:1.5b')
 }
