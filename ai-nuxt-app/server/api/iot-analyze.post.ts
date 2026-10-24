@@ -1,9 +1,20 @@
 import { generateText } from 'ai'
+import { google } from '@ai-sdk/google'
 import { createOllama } from 'ollama-ai-provider-v2'
 
 const ollama = createOllama({
 	baseURL: 'http://localhost:11434/api',
 })
+
+function getModel() {
+	// اگر روی Vercel متغیر ست شده باشد → Gemini
+	if (process.env.USE_GEMINI_EMBEDDING === 'true') {
+		return google('gemini-2.5-flash')
+	}
+
+	// در غیر این صورت (لپ‌تاپ) → Ollama
+	return ollama('gemma2:2b')
+}
 
 export default defineEventHandler(async (event) => {
 	const body = await readBody(event)
@@ -58,7 +69,7 @@ ${lines}
 - عدد تازه نساز. ۳ جمله کوتاه بنویس.`
 
 	const result = await generateText({
-		model: ollama('gemma2:2b'),
+		model: getModel(),
 		prompt,
 	})
 
