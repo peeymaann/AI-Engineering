@@ -44,7 +44,7 @@ export default defineEventHandler(async (event) => {
 	}
 
 	const embeddingModel = isProduction
-		? google.embedding('text-embedding-004')
+		? google.embedding('gemini-embedding-001')
 		: ollama.embedding('nomic-embed-text')
 
 	const { embedding } = await embed({
