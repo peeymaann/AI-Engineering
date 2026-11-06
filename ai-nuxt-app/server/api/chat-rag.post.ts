@@ -6,8 +6,11 @@ import {
 } from 'ai'
 import { startObservation } from '@langfuse/tracing'
 import { createOllama } from 'ollama-ai-provider-v2'
+import { google } from '@ai-sdk/google'
 import { serverSupabaseUser } from '#supabase/server'
 import { useServerSupabase } from '../utils/supabase'
+
+const isProduction = process.env.NODE_ENV === 'production'
 
 const ollama = createOllama({
 	baseURL: 'http://localhost:11434/api',
@@ -40,8 +43,12 @@ export default defineEventHandler(async (event) => {
 		})
 	}
 
+	const embeddingModel = isProduction
+		? google.embedding('text-embedding-004')
+		: ollama.embedding('nomic-embed-text')
+
 	const { embedding } = await embed({
-		model: ollama.embedding('nomic-embed-text'),
+		model: embeddingModel,
 		value: question,
 	})
 
@@ -63,10 +70,14 @@ export default defineEventHandler(async (event) => {
 		matches?.map((m: any) => m.content).join('\n\n') ||
 		'هیچ سند مرتبطی پیدا نشد.'
 
+	const chatModel = isProduction
+		? google('gemini-2.0-flash')
+		: ollama('gemma2:2b')
+
 	const generation = startObservation(
 		'chat-rag',
 		{
-			model: 'gemma2:2b',
+			model: isProduction ? 'gemini-2.0-flash' : 'gemma2:2b',
 			input: question,
 			metadata: { userId, matches: matches?.length ?? 0 },
 		},
@@ -74,7 +85,7 @@ export default defineEventHandler(async (event) => {
 	)
 
 	const result = streamText({
-		model: ollama('gemma2:2b'),
+		model: chatModel,
 		system: `تو دستیار کاربر هستی و فارسی جواب می‌دهی.
 متن‌های زیر اسناد خود کاربر است، نه حرف تو.
 اگر سند با «من» نوشته شده، آن «من» کاربر است.

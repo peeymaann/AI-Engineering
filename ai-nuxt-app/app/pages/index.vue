@@ -38,6 +38,7 @@
 </template>
 
 <script setup>
+
 const { locale, setLocale, t } = useI18n();
 
 function toggleLocale() {

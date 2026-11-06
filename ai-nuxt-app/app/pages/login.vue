@@ -1,8 +1,6 @@
 <template>
 	<main class="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center gap-4 p-6">
 		<h1 class="text-xl font-bold">{{ t('login') }}</h1>
-		<p class="text-sm text-muted">{{ t('loginHint') }}</p>
-
 		<UInput v-model="email" type="email" placeholder="email@example.com" />
 		<UInput v-model="password" type="password" :placeholder="t('passwordHint')" />
 
@@ -16,6 +14,7 @@
 </template>
 
 <script setup>
+
 const { t } = useI18n()
 const client = useSupabaseClient()
 const email = ref('')
