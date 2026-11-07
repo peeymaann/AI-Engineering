@@ -50,6 +50,22 @@
 			variant: 'naked',
 			avatar: { icon: 'i-lucide-bot' },
 		}">
+					<template #message="{ message }">
+						<div class="space-y-2">
+							<div class="whitespace-pre-wrap">{{ getMessageText(message) }}</div>
+
+							<div v-if="message.data?.sources?.length" class="mt-3 border-t border-default/50 pt-2 text-xs text-muted">
+								<p class="font-medium mb-1.5">منابع:</p>
+								<ul class="space-y-1.5">
+									<li v-for="src in message.data.sources" :key="src.id" class="leading-relaxed">
+										<span class="font-medium text-highlighted">{{ src.id }}.</span>
+										{{ src.content }}...
+									</li>
+								</ul>
+							</div>
+						</div>
+					</template>
+
 					<template #indicator>
 						<div class="flex items-center gap-2 text-sm text-muted">
 							<UIcon name="i-lucide-loader-2" class="size-4 animate-spin" />
@@ -89,7 +105,6 @@
 import { useChat } from "@ai-sdk/vue";
 import { DefaultChatTransport } from "ai";
 
-
 const { t } = useI18n();
 const input = ref("");
 const chatStore = useChatStore();
@@ -126,6 +141,14 @@ watch(
 	},
 	{ deep: true },
 );
+
+function getMessageText(msg) {
+	if (!msg?.parts?.length) return "";
+	return msg.parts
+		.filter((part) => part.type === "text")
+		.map((part) => part.text)
+		.join("");
+}
 
 function onPromptKeydown(event, submit) {
 	if (event.key !== "Enter") return;

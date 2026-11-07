@@ -43,14 +43,12 @@ export default defineEventHandler(async (event) => {
 		})
 	}
 
-	// فقط یک Trace والد
 	const trace = startObservation('chat-rag', {
 		input: question,
 		metadata: { userId },
 	})
 
 	try {
-		// ۱. Embedding سؤال
 		const embedSpan = trace.startObservation('embed-question', {
 			input: question,
 		})
@@ -67,7 +65,6 @@ export default defineEventHandler(async (event) => {
 		embedSpan.update({ output: { dimensions: embedding.length } })
 		embedSpan.end()
 
-		// ۲. جستجوی شباهت
 		const searchSpan = trace.startObservation('similarity-search', {
 			input: { match_count: 3, userId },
 		})
@@ -100,7 +97,13 @@ export default defineEventHandler(async (event) => {
 			matches?.map((m: any) => m.content).join('\n\n') ||
 			'هیچ سند مرتبطی پیدا نشد.'
 
-		// ۳. تولید پاسخ
+		const sourcesText =
+			matches?.length
+				? matches
+					.map((m: any, i: number) => `${i + 1}. ${m.content?.slice(0, 150)}...`)
+					.join('\n')
+				: 'هیچ منبعی یافت نشد.'
+
 		const chatModelName = isProduction ? 'gemini-3.8-flash' : 'gemma2:2b'
 		const chatModel = isProduction
 			? google(chatModelName)
@@ -125,7 +128,12 @@ export default defineEventHandler(async (event) => {
 فقط از اسناد جواب بده. اگر سند کافی نبود بگو: «در اسناد موجود پیدا نکردم.»
 
 اسناد:
-${context}`,
+${context}
+
+در پایان پاسخ، حتماً این بخش را اضافه کن:
+
+منابع:
+${sourcesText}`,
 			messages: await convertToModelMessages(messages),
 			temperature: 0.2,
 			experimental_telemetry: {
