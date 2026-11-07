@@ -70,14 +70,15 @@ export default defineEventHandler(async (event) => {
 		matches?.map((m: any) => m.content).join('\n\n') ||
 		'هیچ سند مرتبطی پیدا نشد.'
 
+	const chatModelName = isProduction ? 'gemini-3.8-flash' : 'gemma2:2b'
 	const chatModel = isProduction
-		? google('gemini-1.5-flash')
-		: ollama('gemma2:2b')
+		? google(chatModelName)
+		: ollama(chatModelName)
 
 	const generation = startObservation(
 		'chat-rag',
 		{
-			model: isProduction ? 'gemini-2.0-flash' : 'gemma2:2b',
+			model: chatModelName,
 			input: question,
 			metadata: { userId, matches: matches?.length ?? 0 },
 		},
