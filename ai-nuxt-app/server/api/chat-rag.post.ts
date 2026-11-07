@@ -43,6 +43,17 @@ export default defineEventHandler(async (event) => {
 		})
 	}
 
+	// Trace اصلی
+	const trace = startObservation('chat-rag', {
+		input: question,
+		metadata: { userId },
+	})
+
+	// ۱. Embedding سؤال
+	const embedSpan = trace.startObservation('embed-question', {
+		input: question,
+	})
+
 	const embeddingModel = isProduction
 		? google.embedding('gemini-embedding-001')
 		: ollama.embedding('nomic-embed-text')
@@ -50,6 +61,14 @@ export default defineEventHandler(async (event) => {
 	const { embedding } = await embed({
 		model: embeddingModel,
 		value: question,
+	})
+
+	embedSpan.update({ output: { dimensions: embedding.length } })
+	embedSpan.end()
+
+	// ۲. جستجوی شباهت
+	const searchSpan = trace.startObservation('similarity-search', {
+		input: { match_count: 3, userId },
 	})
 
 	const supabase = useServerSupabase()
@@ -60,27 +79,39 @@ export default defineEventHandler(async (event) => {
 	})
 
 	if (error) {
+		searchSpan.update({ output: { error: error.message } })
+		searchSpan.end()
+		trace.end()
 		throw createError({
 			statusCode: 500,
 			statusMessage: error.message,
 		})
 	}
 
+	searchSpan.update({
+		output: {
+			count: matches?.length ?? 0,
+			contents: matches?.map((m: any) => m.content?.slice(0, 80)),
+		},
+	})
+	searchSpan.end()
+
 	const context =
 		matches?.map((m: any) => m.content).join('\n\n') ||
 		'هیچ سند مرتبطی پیدا نشد.'
 
+	// ۳. تولید پاسخ
 	const chatModelName = isProduction ? 'gemini-3.8-flash' : 'gemma2:2b'
 	const chatModel = isProduction
 		? google(chatModelName)
 		: ollama(chatModelName)
 
-	const generation = startObservation(
-		'chat-rag',
+	const generation = trace.startObservation(
+		'generate-answer',
 		{
 			model: chatModelName,
 			input: question,
-			metadata: { userId, matches: matches?.length ?? 0 },
+			metadata: { matches: matches?.length ?? 0 },
 		},
 		{ asType: 'generation' },
 	)
@@ -104,6 +135,7 @@ ${context}`,
 		onFinish: ({ text }) => {
 			generation.update({ output: text })
 			generation.end()
+			trace.end()
 		},
 	})
 
