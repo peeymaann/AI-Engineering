@@ -71,7 +71,7 @@ export default defineEventHandler(async (event) => {
 		'هیچ سند مرتبطی پیدا نشد.'
 
 	const chatModel = isProduction
-		? google('gemini-2.0-flash')
+		? google('gemini-1.5-flash')
 		: ollama('gemma2:2b')
 
 	const generation = startObservation(
