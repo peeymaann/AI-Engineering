@@ -2,24 +2,35 @@ import { embed } from 'ai'
 import { google } from '@ai-sdk/google'
 import { createOllama } from 'ollama-ai-provider-v2'
 import { useServerSupabaseAdmin } from '../utils/supabase-admin'
+import { serverSupabaseUser } from '#supabase/server'
+
+const isProduction = process.env.NODE_ENV === 'production'
 
 const ollama = createOllama({
 	baseURL: 'http://localhost:11434/api',
 })
 
 function getEmbeddingModel() {
-	if (process.env.USE_GEMINI_EMBEDDING === 'true') {
-		// مدل Embedding گوگل (بعداً در صورت نیاز نام دقیق را تنظیم کنید)
-		return google.textEmbeddingModel('text-embedding-004')
+	if (isProduction || process.env.USE_GEMINI_EMBEDDING === 'true') {
+		return google.textEmbeddingModel('gemini-embedding-001')
 	}
 
 	return ollama.embedding('nomic-embed-text')
 }
 
 export default defineEventHandler(async (event) => {
+	const user = await serverSupabaseUser(event)
+	const userId = user?.id || user?.sub
+
+	if (!userId) {
+		throw createError({
+			statusCode: 401,
+			statusMessage: 'Login required',
+		})
+	}
+
 	const body = await readBody(event)
 	const content = body?.content?.trim()
-	const userId = readUserId(body?.user_id)
 
 	if (!content || typeof content !== 'string') {
 		throw createError({
@@ -47,7 +58,7 @@ export default defineEventHandler(async (event) => {
 			content: chunk,
 			embedding,
 			metadata: { source: 'manual-upload' },
-			...(userId ? { user_id: userId } : {}),
+			user_id: userId,
 		})
 
 		if (error) {
@@ -65,14 +76,3 @@ export default defineEventHandler(async (event) => {
 		saved,
 	}
 })
-
-function readUserId(value: unknown) {
-	if (value == null || value === '') return null
-	if (typeof value !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value)) {
-		throw createError({
-			statusCode: 400,
-			statusMessage: 'user_id must be a UUID',
-		})
-	}
-	return value
-}
